@@ -1,6 +1,6 @@
 import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/react';
 import ExploreContainer from '../components/ExploreContainer';
-import './Schedule.css';
+import styles from './Schedule.module.css';
 import ScheduleFormContainer from '../components/ScheduleFormContainer';
 
 const Schedule: React.FC = () => {
@@ -12,7 +12,9 @@ const Schedule: React.FC = () => {
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>
-        <ScheduleFormContainer />
+        <div className={styles.card_container}>
+          <ScheduleFormContainer />
+        </div>
       </IonContent>
     </IonPage>
   );

@@ -5,10 +5,9 @@ import { IonButton, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, Ion
 
 function ScheduleFormContainer() {
   return (
-    <div className="card-container">
         <IonCard>
             <IonCardHeader>
-                <IonCardTitle>Schedule a new appointment</IonCardTitle>
+                <IonCardTitle>Schedule new appointment</IonCardTitle>
             </IonCardHeader>
 
             <IonCardContent>
@@ -36,12 +35,14 @@ function ScheduleFormContainer() {
                     <IonItem>
                         <IonInput labelPlacement="stacked" type="text" label="Doctor"></IonInput>
                     </IonItem>
-                </IonList>
-            </IonCardContent>
 
-            <IonButton fill="clear">Submit</IonButton>
+                    <IonItem>
+                        <IonInput labelPlacement="stacked" type="text" label="Hospital of preference"></IonInput>
+                    </IonItem>
+                </IonList>
+                <IonButton fill="outline">Submit</IonButton>
+            </IonCardContent>
         </IonCard>
-    </div>
   );
 }
 export default ScheduleFormContainer;
