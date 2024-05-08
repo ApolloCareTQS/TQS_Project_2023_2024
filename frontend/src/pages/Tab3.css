@@ -1,0 +1,9 @@
+.appt_button {
+    float: right;
+}
+
+.appt_col {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+}

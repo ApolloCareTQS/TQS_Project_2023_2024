@@ -1,3 +1,71 @@
-ion-content {
-    --padding-top: 40px;
+swiper-container {
+    height: 350px;
+    line-height: 350px;
+    text-align: center;
+}
+
+swiper-slide {
+    color: #fff;
+    font-size: 35px;
+}
+
+swiper-slide:nth-child(1) {
+    background-image: url("../assets/slide1.jpg");
+    background-position: 0 80%;
+    font-weight: 300;
+}
+
+swiper-slide:nth-child(2) {
+    background-image: url("../assets/mri-pc.jpg");
+    background-position: 60% 60%;
+    font-weight: 300;
+}
+
+span {
+    display: inline-block;
+    vertical-align: middle;
+    line-height: normal;
+}
+
+a {
+    font-size: 20px;
+    text-decoration: underline;
+}
+
+
+.services_div {
+    text-align: center;
+    text-wrap: pretty;
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 20px;
+}
+
+.services_title {
+    font-size: 25px;;
+    font-weight: 600;
+}
+
+.services_img {
+    background-image: url("../assets/services.jpg");
+    width: 100%;
+    height: 100%;
+}
+
+.services_card {
+    margin-left: 10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-right: 10px;
+    font-size: 22px;
+    font-weight: 600;
+}
+
+.explore_all {
+    text-decoration: underline;
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
 }

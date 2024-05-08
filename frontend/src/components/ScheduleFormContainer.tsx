@@ -7,7 +7,7 @@ function ScheduleFormContainer() {
   return (
         <IonCard>
             <IonCardHeader>
-                <IonCardTitle>Schedule new appointment</IonCardTitle>
+                <IonCardTitle color="secondary">Schedule a new appointment</IonCardTitle>
             </IonCardHeader>
 
             <IonCardContent>

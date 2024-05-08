@@ -8,10 +8,10 @@ const Schedule: React.FC = () => {
     <IonPage>
       <IonHeader>
         <IonToolbar>
-          <IonTitle>Schedule</IonTitle>
+          <IonTitle color='primary'>ApolloCare</IonTitle>
         </IonToolbar>
       </IonHeader>
-      <IonContent fullscreen>
+      <IonContent>
         <div className={styles.card_container}>
           <ScheduleFormContainer />
         </div>

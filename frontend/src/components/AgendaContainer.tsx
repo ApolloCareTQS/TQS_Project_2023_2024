@@ -91,25 +91,6 @@ function AgendaContainer() {
                     </IonRow>
 
                     {/* Map over the agendaData array to render each item */}
-                    {agendaData.map((item, index) => (
-                        <IonRow key={index} className={styles.row}>
-                            <IonCol className={styles.col}>
-                                <IonLabel>{item.speciality}</IonLabel>
-                            </IonCol>
-                            <IonCol className={styles.col}>
-                                <IonLabel>{item.date}</IonLabel>
-                            </IonCol>
-                            <IonCol className={styles.col}>
-                                <IonLabel>{item.hour}</IonLabel>
-                            </IonCol>
-                            <IonCol className={styles.col}>
-                                <IonLabel>{item.doctor}</IonLabel>
-                            </IonCol>
-                            <IonCol className={styles.col}>
-                                <IonLabel>{item.hospital}</IonLabel>
-                            </IonCol>
-                        </IonRow>
-                    ))}
                 </IonGrid>
             </IonCardContent>
         </IonCard>
