@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import com.apollocare.backend.models.*;
 
 @Service
-public class AppoimentService {
+public class AppoitmentService {
     
     private final AppointmentRepo repo;
 
