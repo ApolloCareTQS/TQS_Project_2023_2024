@@ -1,3 +1,5 @@
 package com.apollocare.backend.models;
 
-public interface Entity {}
+public class StaffRepo {
+    
+}

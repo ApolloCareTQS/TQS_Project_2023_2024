@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Consultation implements Entity{
+public class Consultation{
     private long id;
     private long scheduledDate;
     private long checkInDate;

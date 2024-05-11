@@ -1,15 +1,14 @@
 package com.apollocare.backend.models;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.EqualsAndHashCode;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-public class Patient implements Entity {
-    private String id;
-    private String name;
-    
-    public Patient(String json){}
+@EqualsAndHashCode(callSuper=true)
+public class Patient extends User {
+    public Patient(String id,String email,String name){
+        super(id,email,name);
+    }
+
+    public Patient(String json){
+        super(json);
+    }
 }
