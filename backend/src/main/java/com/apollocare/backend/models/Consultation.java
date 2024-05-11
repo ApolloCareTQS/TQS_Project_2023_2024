@@ -13,9 +13,11 @@ public class Consultation implements Entity{
     private long checkInDate;
     private long receptionDate;
     private int duration;
-    private long patientId;
-    private long doctorId;
+    private Patient patient;
+    private Doctor doctor;
     private String state;
     private String specialty;
     private String location;
+
+    public Consultation(String json){}
 }
