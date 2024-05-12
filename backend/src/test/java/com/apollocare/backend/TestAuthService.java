@@ -1,4 +1,4 @@
-package com.market.backend;
+package com.apollocare.backend;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -7,6 +7,7 @@ import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.reactive.function.client.WebClient;
 
 import com.apollocare.backend.models.Patient;
 import com.apollocare.backend.models.PatientRepo;
@@ -16,6 +17,7 @@ import com.apollocare.backend.util.SupabaseManager;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.when;
 
@@ -72,5 +74,15 @@ class TestAuthService {
 		ResponseEntity<User> response=service.register(PATIENT,"test2@email.com","test2","password");
 		assertEquals(HttpStatus.UNPROCESSABLE_ENTITY, response.getStatusCode());
 		assertNull(response.getBody());
+	}
+
+	@Test
+	void testSomething(){
+		WebClient web = WebClient.builder()
+                .baseUrl("https://jsonplaceholder.typicode.com/")
+                .build();
+		ResponseEntity<String> response=web.get().uri("todos/1").retrieve().toEntity(String.class).block();
+		assertEquals(HttpStatus.OK, response.getStatusCode());
+		
 	}
 }
