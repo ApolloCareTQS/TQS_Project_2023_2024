@@ -30,10 +30,10 @@ public class SupabaseManager {
     }
 
     public ResponseEntity<String> getRequest(String uri){
-        return null;
+        return web.get().uri(uri).retrieve().toEntity(String.class).block();
     }
 
     public ResponseEntity<String> postRequest(String uri, String body){
-        return null;
+        return web.post().uri(uri).bodyValue(body).retrieve().toEntity(String.class).block();
     }
 }
