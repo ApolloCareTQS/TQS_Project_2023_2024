@@ -12,4 +12,8 @@ public class PatientRepo extends Repository{
     public Optional<Patient> getFromId(String id){
         return null;
     }
+
+    public Optional<Patient> insert(Patient user) {
+        return null;
+    }
 }

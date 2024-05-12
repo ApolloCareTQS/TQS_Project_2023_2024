@@ -13,6 +13,7 @@ import com.apollocare.backend.models.PatientRepo;
 import com.apollocare.backend.models.User;
 import com.apollocare.backend.service.AuthService;
 import com.apollocare.backend.util.SupabaseManager;
+import com.fasterxml.jackson.core.JsonProcessingException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -41,7 +42,7 @@ class TestAuthService {
 	}
 
 	@Test
-	void testSignUpAvailablePatient(){
+	void testSignUpAvailablePatient() throws JsonProcessingException{
 		when(manager.postRequest(any(), any())).thenReturn(new ResponseEntity<String>("\"user\":{\"id\":\"123abc\"}",HttpStatus.OK));
 		when(repo.getFromId("123abc")).thenReturn(Optional.of(patient));
 		ResponseEntity<User> response=service.register(PATIENT,"test2","test2@email.com","password");
@@ -50,7 +51,7 @@ class TestAuthService {
 	}
 
 	@Test
-	void testSignUpTakenPatient(){
+	void testSignUpTakenPatient() throws JsonProcessingException{
 		when(manager.postRequest(any(), any())).thenReturn(new ResponseEntity<String>("error message",HttpStatus.UNPROCESSABLE_ENTITY));
 		ResponseEntity<User> response=service.register(PATIENT,"test2@email.com","test2","password");
 		assertEquals(HttpStatus.UNPROCESSABLE_ENTITY, response.getStatusCode());
@@ -67,10 +68,11 @@ class TestAuthService {
 	}
 
 	@Test
-	void testLogInWrongCredentialsPatient(){
+	void testLogInWrongCredentialsPatient() throws JsonProcessingException{
 		when(manager.postRequest(any(), any())).thenReturn(new ResponseEntity<String>("error message",HttpStatus.UNPROCESSABLE_ENTITY));
-		ResponseEntity<User> response=service.register(PATIENT,"test2@email.com","test2","password");
+		ResponseEntity<User> response=service.login(PATIENT,"test2@email.com","password");
 		assertEquals(HttpStatus.UNPROCESSABLE_ENTITY, response.getStatusCode());
 		assertNull(response.getBody());
 	}
+
 }

@@ -13,8 +13,7 @@ public class Staff extends User {
         this.clinic=clinic;
     }
 
-    public Staff(String json){
-        super(json);
-        //TODO: implement remaining fields
+    public Staff(String id, String email, String name){
+        super(id, email, name);
     }
 }

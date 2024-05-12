@@ -12,5 +12,9 @@ public class Doctor extends Staff{
         super(id,email,name,clinic);
         this.specialty=specialty;
     }
+
+    public Doctor(String id, String email, String name){
+        super(id,email,name);
+    }
     
 }
