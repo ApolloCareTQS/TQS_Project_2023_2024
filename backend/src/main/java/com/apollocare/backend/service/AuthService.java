@@ -2,7 +2,6 @@ package com.apollocare.backend.service;
 
 import org.springframework.http.ResponseEntity;
 
-import com.apollocare.backend.models.Patient;
 import com.apollocare.backend.models.User;
 import com.apollocare.backend.util.Role;
 
