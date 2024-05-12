@@ -62,6 +62,8 @@ class TestAuthService {
 		when(manager.postRequest(any(), any())).thenReturn(new ResponseEntity<String>("\"user\":{\"id\":\"123abc\"}",HttpStatus.OK));
 		when(repo.getFromId("123abc")).thenReturn(Optional.of(patient));
 		ResponseEntity<User> response=service.login(PATIENT, "test2@email.com","password");
+		assertEquals(HttpStatus.OK,response.getStatusCode());
+		assertEquals(patient, response.getBody());
 	}
 
 	@Test

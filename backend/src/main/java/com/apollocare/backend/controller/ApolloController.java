@@ -25,15 +25,15 @@ public class ApolloController {
     public List<Consultation> getAllConsultations() {
         return cService.findAllConsultations();
     }
-
+    //TODO: change to ResponseEntity<...> everything that might return a non-500 error (mainly post requests). Also, non-list values will be returned as Optional's to avoid nulls, so properly handle them (if getting muyltiple values, an empty list will be returned instead)
     @PostMapping("/add")
     public Consultation addConsultation(@RequestBody Consultation Consultation) {
-        return cService.schedule(Consultation);
+        return cService.schedule(Consultation).get();
     }
 
     @GetMapping("/consultations/{id}")
     public Consultation getConsultationById(@PathVariable Long id) {
-        return cService.getConsultationById(id).orElse(null);
+        return cService.getConsultationById(id).get();
     }
 
     @DeleteMapping("/delete/{id}")
