@@ -62,16 +62,9 @@ class TestAuthService {
 	@Test 
 	void testLogInSuccessPatient(){
 		when(manager.postRequest(any(), any())).thenReturn(new ResponseEntity<String>("\"user\":{\"id\":\"123abc\"}",HttpStatus.OK));
-	
-		@Test
-		void testSomething(){
-			WebClient web = WebClient.builder()
-					.baseUrl("https://jsonplaceholder.typicode.com/")
-					.build();
-			ResponseEntity<String> response=web.get().uri("todos/1").retrieve().toEntity(String.class).block();
-			assertEquals(HttpStatus.OK, response.getStatusCode());
-			
-		}	assertEquals(HttpStatus.OK,response.getStatusCode());
+		when(repo.getFromId("123abc")).thenReturn(Optional.of(patient));
+		ResponseEntity<User> response=service.login(PATIENT, "test2@email.com","password");
+		assertEquals(HttpStatus.OK,response.getStatusCode());
 		assertEquals(patient, response.getBody());
 	}
 
