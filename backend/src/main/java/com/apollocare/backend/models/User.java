@@ -8,9 +8,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class User {
-    private String id;
-    private String email;
-    private String name;
+    protected String id;
+    protected String email;
+    protected String name;
     
-    public User(String json){}
+    public User(String json){
+        //TODO: Add conversion from json
+    }
 }

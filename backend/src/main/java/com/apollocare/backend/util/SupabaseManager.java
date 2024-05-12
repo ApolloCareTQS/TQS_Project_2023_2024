@@ -1,8 +1,5 @@
 package com.apollocare.backend.util;
 
-import java.util.HashMap;
-
-import org.hibernate.mapping.Map;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -33,8 +30,10 @@ public class SupabaseManager {
     }
 
     public ResponseEntity<String> getRequest(String uri){
+        return null;
     }
 
     public ResponseEntity<String> postRequest(String uri, String body){
+        return null;
     }
 }

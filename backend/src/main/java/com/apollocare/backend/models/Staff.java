@@ -6,7 +6,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper=true)
 public class Staff extends User {
-    private String clinic;
+    protected String clinic;
 
     public Staff(String id,String email,String name, String clinic){
         super(id,email,name);
@@ -15,5 +15,6 @@ public class Staff extends User {
 
     public Staff(String json){
         super(json);
+        //TODO: implement remaining fields
     }
 }
