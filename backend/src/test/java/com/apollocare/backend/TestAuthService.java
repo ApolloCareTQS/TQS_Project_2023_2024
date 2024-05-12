@@ -62,9 +62,16 @@ class TestAuthService {
 	@Test 
 	void testLogInSuccessPatient(){
 		when(manager.postRequest(any(), any())).thenReturn(new ResponseEntity<String>("\"user\":{\"id\":\"123abc\"}",HttpStatus.OK));
-		when(repo.getFromId("123abc")).thenReturn(Optional.of(patient));
-		ResponseEntity<User> response=service.login(PATIENT, "test2@email.com","password");
-		assertEquals(HttpStatus.OK,response.getStatusCode());
+	
+		@Test
+		void testSomething(){
+			WebClient web = WebClient.builder()
+					.baseUrl("https://jsonplaceholder.typicode.com/")
+					.build();
+			ResponseEntity<String> response=web.get().uri("todos/1").retrieve().toEntity(String.class).block();
+			assertEquals(HttpStatus.OK, response.getStatusCode());
+			
+		}	assertEquals(HttpStatus.OK,response.getStatusCode());
 		assertEquals(patient, response.getBody());
 	}
 
@@ -74,15 +81,5 @@ class TestAuthService {
 		ResponseEntity<User> response=service.register(PATIENT,"test2@email.com","test2","password");
 		assertEquals(HttpStatus.UNPROCESSABLE_ENTITY, response.getStatusCode());
 		assertNull(response.getBody());
-	}
-
-	@Test
-	void testSomething(){
-		WebClient web = WebClient.builder()
-                .baseUrl("https://jsonplaceholder.typicode.com/")
-                .build();
-		ResponseEntity<String> response=web.get().uri("todos/1").retrieve().toEntity(String.class).block();
-		assertEquals(HttpStatus.OK, response.getStatusCode());
-		
 	}
 }
