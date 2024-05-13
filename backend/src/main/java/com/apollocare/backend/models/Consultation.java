@@ -18,6 +18,4 @@ public class Consultation{
     private String state;
     private String specialty;
     private String location;
-
-    public Consultation(String json){}
 }

@@ -45,7 +45,6 @@ class TestAuthService {
 
 	@BeforeEach
 	void setup(){
-		service=new AuthService(manager, patientRepo, doctorRepo, staffRepo);
 		patient=new Patient("123abc","test2@email.com","test2");
 	}
 
