@@ -26,9 +26,9 @@ public class AuthService {
     private SupabaseManager manager;
     private ObjectMapper mapper;
 
-    public AuthService(SupabaseManager manager,ObjectMapper mapper){
+    public AuthService(SupabaseManager manager){
         this.manager=manager;
-        this.mapper=mapper;
+        this.mapper=new ObjectMapper();
     }
 
     private ResponseEntity<String> register(String email,String password) throws JsonProcessingException{
@@ -76,6 +76,7 @@ public class AuthService {
                 default:
                     throw new IllegalArgumentException("Role not accounted for");
             }
+            return new ResponseEntity<>(user,HttpStatus.OK);
         }
     }
 
