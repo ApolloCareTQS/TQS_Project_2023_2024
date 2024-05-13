@@ -8,8 +8,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import com.apollocare.backend.models.DoctorRepo;
 import com.apollocare.backend.models.Patient;
 import com.apollocare.backend.models.PatientRepo;
+import com.apollocare.backend.models.StaffRepo;
 import com.apollocare.backend.models.User;
 import com.apollocare.backend.service.AuthService;
 import com.apollocare.backend.util.SupabaseManager;
@@ -29,7 +31,12 @@ class TestAuthService {
 	private SupabaseManager manager;
 
 	@Mock
-	private PatientRepo repo;
+	private PatientRepo patientRepo;
+	@Mock
+	private StaffRepo staffRepo;
+	@Mock
+	private DoctorRepo doctorRepo;
+
 
 	@InjectMocks
 	private AuthService service;
@@ -38,13 +45,14 @@ class TestAuthService {
 
 	@BeforeEach
 	void setup(){
+		service=new AuthService(manager, patientRepo, doctorRepo, staffRepo);
 		patient=new Patient("123abc","test2@email.com","test2");
 	}
 
 	@Test
 	void testSignUpAvailablePatient() throws JsonProcessingException{
 		when(manager.postRequest(any(), any())).thenReturn(new ResponseEntity<String>("{\"user\":{\"id\":\"123abc\"}}",HttpStatus.OK));
-		when(repo.getFromId("123abc")).thenReturn(Optional.of(patient));
+		when(patientRepo.insert(any())).thenReturn(Optional.of(patient));
 		ResponseEntity<User> response=service.register(PATIENT,"test2","test2@email.com","password");
 		assertEquals(HttpStatus.OK,response.getStatusCode());
 		assertEquals(patient, response.getBody());
@@ -59,9 +67,9 @@ class TestAuthService {
 	}
 
 	@Test 
-	void testLogInSuccessPatient(){
-		when(manager.postRequest(any(), any())).thenReturn(new ResponseEntity<String>("\"user\":{\"id\":\"123abc\"}",HttpStatus.OK));
-		when(repo.getFromId("123abc")).thenReturn(Optional.of(patient));
+	void testLogInSuccessPatient() throws JsonProcessingException{
+		when(manager.postRequest(any(), any())).thenReturn(new ResponseEntity<String>("{\"user\":{\"id\":\"123abc\"}}",HttpStatus.OK));
+		when(patientRepo.findById(any())).thenReturn(Optional.of(patient));
 		ResponseEntity<User> response=service.login(PATIENT, "test2@email.com","password");
 		assertEquals(HttpStatus.OK,response.getStatusCode());
 		assertEquals(patient, response.getBody());

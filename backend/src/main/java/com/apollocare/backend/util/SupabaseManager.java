@@ -23,9 +23,7 @@ public class SupabaseManager {
         headers.add("apikey", apiKey);
         web = WebClient.builder()
                 .baseUrl(baseURL)
-                .defaultHeaders(httpHeaders -> {
-                    httpHeaders.addAll(headers);
-                })
+                .defaultHeaders(httpHeaders -> httpHeaders.addAll(headers))
                 .build();
     }
 
