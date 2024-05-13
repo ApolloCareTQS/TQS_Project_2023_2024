@@ -13,7 +13,7 @@ public class Staff extends User {
     @JsonProperty("clinic")
     protected String clinic;
 
-    public Staff(String id,String email,String name, @JsonProperty("clinic") String clinic){
+    public Staff(String id,String email,String name, String clinic){
         super(id,email,name);
         this.clinic=clinic;
     }

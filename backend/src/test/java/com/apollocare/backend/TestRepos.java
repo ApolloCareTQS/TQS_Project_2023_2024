@@ -38,7 +38,7 @@ class TestRepos {
     void setup() {
         patient = new Patient("abc123", "johndoe@email.com", "John Doe");
         doctor = new Doctor("abc123", "johndoe@email.com", "John Doe","apolloClinic","cardiovascular");
-        staff = new Staff("abc123", "johndoe@email.com", "John Doe","ApolloClinic");
+        staff = new Staff("abc123", "johndoe@email.com", "John Doe","apolloClinic");
     }
 
     @Test

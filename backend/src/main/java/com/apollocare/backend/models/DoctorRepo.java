@@ -44,7 +44,7 @@ public class DoctorRepo extends Repository {
         body.put("clinic",doctor.getClinic());
         body.put("specialty",doctor.getSpecialty());
         logger.debug("id: {} -> insert called",doctor.getId());
-        ResponseEntity<String> response=manager.postRequest("rest/v1/Patient", mapper.writeValueAsString(body));
+        ResponseEntity<String> response=manager.postRequest("rest/v1/Doctor", mapper.writeValueAsString(body));
 
         if(response.getStatusCode()!=HttpStatus.CREATED){
             logger.debug("id: {} -> insert failed",doctor.getId());
