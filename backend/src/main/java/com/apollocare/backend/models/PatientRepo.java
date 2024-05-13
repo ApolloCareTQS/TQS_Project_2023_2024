@@ -35,19 +35,19 @@ public class PatientRepo extends Repository{
         }
     }
 
-    public Optional<Patient> insert(Patient user) throws JsonProcessingException {
+    public Optional<Patient> insert(Patient patient) throws JsonProcessingException {
         Map<String,String> body=new HashMap<>();
-        body.put("id",user.getId());
-        body.put("email",user.getEmail());
-        body.put("name",user.getEmail());
-        logger.debug("id: {} -> insert called",user.getId());
+        body.put("id",patient.getId());
+        body.put("email",patient.getEmail());
+        body.put("name",patient.getEmail());
+        logger.debug("id: {} -> insert called",patient.getId());
         ResponseEntity<String> response=manager.postRequest("rest/v1/Patient", mapper.writeValueAsString(body));
 
         if(response.getStatusCode()!=HttpStatus.CREATED){
-            logger.debug("id: {} -> insert failed",user.getId());
+            logger.debug("id: {} -> insert failed",patient.getId());
             return Optional.empty();
         }else{
-            return Optional.of(user);
+            return Optional.of(patient);
         }
     }
 }

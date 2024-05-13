@@ -19,7 +19,7 @@ import com.apollocare.backend.util.SupabaseManager;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 @SpringBootTest
-public class TestRepos {
+class TestRepos {
     @Mock
     private SupabaseManager manager;
 
@@ -37,8 +37,8 @@ public class TestRepos {
     @BeforeEach
     void setup() {
         patient = new Patient("abc123", "johndoe@email.com", "John Doe");
-        doctor = new Doctor("abc123", "johndoe@email.com", "John Doe");
-        staff = new Staff("abc123", "johndoe@email.com", "John Doe");
+        doctor = new Doctor("abc123", "johndoe@email.com", "John Doe","apolloClinic","cardiovascular");
+        staff = new Staff("abc123", "johndoe@email.com", "John Doe","ApolloClinic");
     }
 
     @Test
@@ -46,5 +46,37 @@ public class TestRepos {
         when(manager.getRequest(any())).thenReturn(new ResponseEntity<>(
                 "[{\"id\":\"abc123\",\"email\":\"johndoe@email.com\",\"name\":\"John Doe\"}]", HttpStatus.OK));
         assertEquals(Optional.of(patient), patientRepo.findById("abc"));
+    }
+
+    @Test
+    void testStaffFindById() throws JsonProcessingException {
+        when(manager.getRequest(any())).thenReturn(new ResponseEntity<>(
+                "[{\"id\":\"abc123\",\"email\":\"johndoe@email.com\",\"name\":\"John Doe\",\"clinic\":\"apolloClinic\"}]", HttpStatus.OK));
+        assertEquals(Optional.of(staff), staffRepo.findById("abc"));
+    }
+
+    @Test
+    void testDoctorFindById() throws JsonProcessingException {
+        when(manager.getRequest(any())).thenReturn(new ResponseEntity<>(
+            "[{\"id\":\"abc123\",\"email\":\"johndoe@email.com\",\"name\":\"John Doe\",\"clinic\":\"apolloClinic\",\"specialty\":\"cardiovascular\"}]", HttpStatus.OK));
+        assertEquals(Optional.of(doctor), doctorRepo.findById("abc"));
+    }
+
+    @Test
+    void testPatientInsertSuccessful() throws JsonProcessingException{
+        when(manager.postRequest(any(),any())).thenReturn(new ResponseEntity<>(HttpStatus.CREATED));
+        assertEquals(Optional.of(patient), patientRepo.insert(patient));
+    }
+
+    @Test
+    void testDoctorInsertSuccessful() throws JsonProcessingException{
+        when(manager.postRequest(any(),any())).thenReturn(new ResponseEntity<>(HttpStatus.CREATED));
+        assertEquals(Optional.of(doctor), doctorRepo.insert(doctor));
+    }
+
+    @Test
+    void testStaffInsertSuccessful() throws JsonProcessingException{
+        when(manager.postRequest(any(),any())).thenReturn(new ResponseEntity<>(HttpStatus.CREATED));
+        assertEquals(Optional.of(staff), staffRepo.insert(staff));
     }
 }
