@@ -1,5 +1,7 @@
 package com.apollocare.backend.models;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.http.HttpStatus;
@@ -33,7 +35,19 @@ public class PatientRepo extends Repository{
         }
     }
 
-    public Optional<Patient> insert(Patient user) {
-        return null;
+    public Optional<Patient> insert(Patient user) throws JsonProcessingException {
+        Map<String,String> body=new HashMap<>();
+        body.put("id",user.getId());
+        body.put("email",user.getEmail());
+        body.put("name",user.getEmail());
+        logger.debug("id: {} -> insert called",user.getId());
+        ResponseEntity<String> response=manager.postRequest("rest/v1/Patient", mapper.writeValueAsString(body));
+
+        if(response.getStatusCode()!=HttpStatus.CREATED){
+            logger.debug("id: {} -> insert failed",user.getId());
+            return Optional.empty();
+        }else{
+            return Optional.of(user);
+        }
     }
 }
