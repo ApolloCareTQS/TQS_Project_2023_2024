@@ -43,7 +43,7 @@ class TestAuthService {
 
 	@Test
 	void testSignUpAvailablePatient() throws JsonProcessingException{
-		when(manager.postRequest(any(), any())).thenReturn(new ResponseEntity<String>("\"user\":{\"id\":\"123abc\"}",HttpStatus.OK));
+		when(manager.postRequest(any(), any())).thenReturn(new ResponseEntity<String>("{\"user\":{\"id\":\"123abc\"}}",HttpStatus.OK));
 		when(repo.getFromId("123abc")).thenReturn(Optional.of(patient));
 		ResponseEntity<User> response=service.register(PATIENT,"test2","test2@email.com","password");
 		assertEquals(HttpStatus.OK,response.getStatusCode());
