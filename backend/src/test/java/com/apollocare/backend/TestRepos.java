@@ -81,4 +81,20 @@ class TestRepos {
         when(manager.postRequest(any(),any())).thenReturn(new ResponseEntity<>(HttpStatus.CREATED));
         assertEquals(Optional.of(staff), staffRepo.insert(staff));
     }
+
+    @Test
+    void testFindByIdErrorCode() throws JsonProcessingException{
+        when(manager.getRequest(any())).thenReturn(new ResponseEntity<>(HttpStatus.TOO_MANY_REQUESTS));
+        assertEquals(Optional.empty(), patientRepo.findById("abc123"));
+        assertEquals(Optional.empty(), staffRepo.findById("abc123"));
+        assertEquals(Optional.empty(), doctorRepo.findById("abc123"));
+    }
+    
+    @Test
+    void testStaffFindByIdNoResults() throws JsonProcessingException{
+        when(manager.getRequest(any())).thenReturn(new ResponseEntity<>("[]",HttpStatus.OK));
+        assertEquals(Optional.empty(), patientRepo.findById("abc123"));
+        assertEquals(Optional.empty(), staffRepo.findById("abc123"));
+        assertEquals(Optional.empty(), doctorRepo.findById("abc123"));
+    }
 }

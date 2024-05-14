@@ -9,15 +9,10 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 @Component
 public class SupabaseManager {
-    @Value("${supabase.baseURL}")
-    private String baseURL;
-
-    @Value("${supabase.apiKey}")
-    private String apiKey;
 
     private WebClient web;
 
-    public SupabaseManager() {
+    public SupabaseManager(@Value("${supabase.apiKey}") String apiKey, @Value("${supabase.baseURL}") String baseURL) {
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
         headers.add("apikey", apiKey);
