@@ -1,3 +1,4 @@
+/* 
 package com.apollocare.backend.models;
 
 import lombok.AllArgsConstructor;
@@ -19,3 +20,4 @@ public class Consultation{
     private String specialty;
     private String location;
 }
+*/
