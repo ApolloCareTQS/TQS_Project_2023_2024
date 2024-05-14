@@ -108,6 +108,7 @@ public class AuthController {
         Cookie cookie=new Cookie(key, value);
         cookie.setHttpOnly(true);
         cookie.setPath("/");
+        cookie.setSecure(true);
         return cookie;
     }
 }
