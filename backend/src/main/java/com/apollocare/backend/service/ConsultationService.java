@@ -9,6 +9,7 @@ import com.apollocare.backend.models.Consultation;
 
 @Service
 public class ConsultationService {
+    /* 
     public List<Consultation> findAllConsultations(){
         return null;
     }
@@ -23,4 +24,5 @@ public class ConsultationService {
 
     public void deleteConsultation(Long id){
     }
+    */
 }
