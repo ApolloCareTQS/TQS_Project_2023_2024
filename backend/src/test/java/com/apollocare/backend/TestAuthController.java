@@ -136,4 +136,25 @@ class TestAuthController {
         assertFalse(cookies.containsKey("token"));
         assertFalse(cookies.containsKey("role"));        
     }
+
+    @Test
+    void testWrongRole() throws JsonProcessingException{
+        MockMvcResponse response = given()
+                .mockMvc(mock)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(mapper.writeValueAsString(new SignUpRequest("INVALID","John Doe", "johndoe@email.com","password")))
+                .when()
+                .post("/auth/v1/login");
+
+        response.then().statusCode(400);
+
+        response = given()
+                .mockMvc(mock)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(mapper.writeValueAsString(new LogInRequest("INVALID", "johndoe@email.com","password")))
+                .when()
+                .post("/auth/v1/register");
+
+        response.then().statusCode(400);
+    }
 }
