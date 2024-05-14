@@ -8,8 +8,10 @@ import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +20,7 @@ import com.apollocare.backend.models.*;
 import com.apollocare.backend.util.SupabaseManager;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
-@SpringBootTest
+@ExtendWith(MockitoExtension.class)
 class TestRepos {
     @Mock
     private SupabaseManager manager;
