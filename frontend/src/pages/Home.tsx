@@ -1,4 +1,4 @@
-import { IonButton, IonButtons, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonCol, IonContent, IonGrid, IonHeader, IonIcon, IonItem, IonLabel, IonList, IonMenu, IonMenuButton, IonPage, IonRow, IonTitle, IonToolbar } from '@ionic/react';
+import { IonButton, IonButtons, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonCol, IonContent, IonFooter, IonGrid, IonHeader, IonIcon, IonItem, IonLabel, IonList, IonMenu, IonMenuButton, IonPage, IonRow, IonTitle, IonToolbar } from '@ionic/react';
 import ExploreContainer from '../components/ExploreContainer';
 import styles from './Home.module.css';
 import ScheduleFormContainer from '../components/ScheduleFormContainer';
@@ -28,6 +28,13 @@ const Home: React.FC = () => {
             <IonTitle>Menu</IonTitle>
           </IonToolbar>
         </IonHeader>
+        <IonContent>
+
+        </IonContent>
+        <IonFooter>
+            <IonButton href='/login' color='success' fill='outline'>Login&nbsp;</IonButton>
+            <IonButton href='/register' fill='outline'>Register&nbsp;</IonButton>
+        </IonFooter>
       </IonMenu>
       <IonPage style={styles} id='main-content'>
         <IonHeader>

@@ -1,0 +1,10 @@
+.card_container {
+  display: block;
+  justify-content: center;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  width: 50%;
+  transform: translate(50%, -50%);
+}
