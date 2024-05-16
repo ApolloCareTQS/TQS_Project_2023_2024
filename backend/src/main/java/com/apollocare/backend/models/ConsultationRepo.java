@@ -1,13 +1,75 @@
 package com.apollocare.backend.models;
 
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
 import com.apollocare.backend.util.SupabaseManager;
+import com.fasterxml.jackson.core.JsonProcessingException;
 
-import lombok.AllArgsConstructor;
-
-@AllArgsConstructor
 @Component
-public class ConsultationRepo{
-    private SupabaseManager manager;
+public class ConsultationRepo extends Repository{
+
+    public ConsultationRepo(SupabaseManager manager) {
+        super(manager);
+    }
+
+
+    public Optional<Consultation> insert(Consultation consultation) throws JsonProcessingException{
+        Map<String, Object> body = new HashMap<>();
+        body.put("id", consultation.getId());
+        body.put("scheduledDate", consultation.getScheduledDate());
+        body.put("checkInDate", consultation.getCheckInDate());
+        body.put("receptionDate", consultation.getReceptionDate());
+        body.put("duration", consultation.getDuration());
+        body.put("patient", consultation.getPatient());
+        body.put("doctor", consultation.getDoctor());
+        body.put("state", consultation.getState());
+        body.put("specialty", consultation.getSpecialty());
+        body.put("location", consultation.getLocation());
+        logger.debug("id: {} -> insert called",consultation.getId());
+        ResponseEntity<String> response=manager.postRequest("api/v1/Consultation", mapper.writeValueAsString(body));
+
+        if(response.getStatusCode()!=HttpStatus.CREATED){
+            logger.debug("id: {} -> insert failed",consultation.getId());
+            return Optional.empty();
+        }else{
+            return Optional.of(consultation);
+        }
+    }
+
+    public Optional<Consultation> findById(String id) throws JsonProcessingException{
+        ResponseEntity<String> response=manager.getRequest("api/v1/Consultation?select=*&id=eq."+id);
+        if(response.getStatusCode()!=HttpStatus.OK){
+            logger.debug("id: {} -> findById() request returned with code {}",id,response.getStatusCode());
+            return Optional.empty();
+        }else{
+            String body=response.getBody();
+            logger.debug("id: {} -> findById() request returned with body {}",id,body);
+            Consultation[] consultations=mapper.readValue(body,Consultation[].class);
+            if(consultations.length==0){
+                logger.debug("id: {} -> findById() had no results",id);
+                return Optional.empty();
+            }else{
+                return Optional.of(consultations[0]);
+            }
+        }
+    }
+
+    public List<Consultation> findAll() {
+        ResponseEntity<String> response = manager.getRequest("/api/v1/Consultations?select=*");
+        if (response.getStatusCode() == HttpStatus.OK) {
+            return manager.parseConsultationList(response.getBody());
+        }
+        return Collections.emptyList();
+    }
+
+
+    
 }

@@ -1,8 +1,10 @@
-/*
 package com.apollocare.backend.controller;
 
 import java.util.List;
+import java.util.Optional;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,24 +27,29 @@ public class ApolloController {
     }
 
     @GetMapping("/consultations")
-    public List<Consultation> getAllConsultations() {
-        return cService.findAllConsultations();
+    public ResponseEntity<List<Consultation>> getAllConsultations() {
+        List<Consultation> consultations = cService.findAllConsultations();
+        return ResponseEntity.ok(consultations);
     }
-    //TODO: change to ResponseEntity<...> everything that might return a non-500 error (mainly post requests). Also, non-list values will be returned as Optional's to avoid nulls, so properly handle them (if getting muyltiple values, an empty list will be returned instead)
-    @PostMapping("/add")
-    public Consultation addConsultation(@RequestBody Consultation Consultation) {
-        return cService.schedule(Consultation).get();
+
+    @PostMapping("/consultations/add")
+    public ResponseEntity<Consultation> addConsultation(@RequestBody Consultation consultation) {
+        Optional<Consultation> optionalConsultation = cService.schedule(consultation);
+        return optionalConsultation.map(ResponseEntity::ok)
+                                   .orElse(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build());
     }
 
     @GetMapping("/consultations/{id}")
-    public Consultation getConsultationById(@PathVariable Long id) {
-        return cService.getConsultationById(id).get();
+    public ResponseEntity<Consultation> getConsultationById(@PathVariable String id) {
+        Optional<Consultation> optionalConsultation = cService.getConsultationById(id);
+        return optionalConsultation.map(ResponseEntity::ok)
+                                   .orElse(ResponseEntity.notFound().build());
     }
 
     @DeleteMapping("/delete/{id}")
-    public void deleteConsultation(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteConsultation(@PathVariable Long id) {
         cService.deleteConsultation(id);
+        return ResponseEntity.noContent().build();
     }
 
 }
-*/
