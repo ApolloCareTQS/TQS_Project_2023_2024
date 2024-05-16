@@ -36,7 +36,7 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: cd backend && mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=apollocare_apollocare -Dsonar.qualitygate.wait=true
       - name: "Import results to Xray"
-        uses: mikepenz/xray-action@{latest-release}
+        uses: mikepenz/xray-action@v3.0.5
         with:
           username: ${{ secrets.XRAY_CLIENT_ID }}
           password: ${{ secrets.XRAY_CLIENT_SECRET }}
