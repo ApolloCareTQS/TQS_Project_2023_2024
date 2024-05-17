@@ -42,7 +42,7 @@ public class ConsultationService {
         }
     }
 
-    public Optional<Consultation> getConsultationById(String id) {
+    public Optional<Consultation> getConsultationById(Long id) {
         try {
             return ConsultationRepo.findById(id);
         } catch (Exception e) {

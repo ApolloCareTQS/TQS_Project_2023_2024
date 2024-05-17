@@ -40,7 +40,7 @@ public class ApolloController {
     }
 
     @GetMapping("/consultations/{id}")
-    public ResponseEntity<Consultation> getConsultationById(@PathVariable String id) {
+    public ResponseEntity<Consultation> getConsultationById(@PathVariable Long id) {
         Optional<Consultation> optionalConsultation = cService.getConsultationById(id);
         return optionalConsultation.map(ResponseEntity::ok)
                                    .orElse(ResponseEntity.notFound().build());

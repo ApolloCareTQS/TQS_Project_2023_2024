@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Consultation{
     @JsonProperty("id")
-    protected String id;
+    protected Long id;
     @JsonProperty("scheduledDate")
     protected long scheduledDate;
     @JsonProperty("checkInDate")
@@ -20,10 +20,10 @@ public class Consultation{
     protected long receptionDate;
     @JsonProperty("duration")
     protected int duration;
-    @JsonProperty("patient")
-    protected Patient patient;
-    @JsonProperty("doctor")
-    protected Doctor doctor;
+    @JsonProperty("patientId")
+    protected String patientId;
+    @JsonProperty("doctorId")
+    protected String doctorId;
     @JsonProperty("state")
     protected String state;
     @JsonProperty("specialty")

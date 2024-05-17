@@ -28,13 +28,13 @@ public class ConsultationRepo extends Repository{
         body.put("checkInDate", consultation.getCheckInDate());
         body.put("receptionDate", consultation.getReceptionDate());
         body.put("duration", consultation.getDuration());
-        body.put("patient", consultation.getPatient());
-        body.put("doctor", consultation.getDoctor());
+        body.put("patientId", consultation.getPatientId());
+        body.put("doctorId", consultation.getDoctorId());
         body.put("state", consultation.getState());
         body.put("specialty", consultation.getSpecialty());
         body.put("location", consultation.getLocation());
         logger.debug("id: {} -> insert called",consultation.getId());
-        ResponseEntity<String> response=manager.postRequest("api/v1/Consultation", mapper.writeValueAsString(body));
+        ResponseEntity<String> response=manager.postRequest("rest/v1/Consultation", mapper.writeValueAsString(body));
 
         if(response.getStatusCode()!=HttpStatus.CREATED){
             logger.debug("id: {} -> insert failed",consultation.getId());
@@ -44,8 +44,8 @@ public class ConsultationRepo extends Repository{
         }
     }
 
-    public Optional<Consultation> findById(String id) throws JsonProcessingException{
-        ResponseEntity<String> response=manager.getRequest("api/v1/Consultation?select=*&id=eq."+id);
+    public Optional<Consultation> findById(Long id) throws JsonProcessingException{
+        ResponseEntity<String> response=manager.getRequest("rest/v1/Consultation?select=*&id=eq."+id);
         if(response.getStatusCode()!=HttpStatus.OK){
             logger.debug("id: {} -> findById() request returned with code {}",id,response.getStatusCode());
             return Optional.empty();
@@ -63,7 +63,7 @@ public class ConsultationRepo extends Repository{
     }
 
     public List<Consultation> findAll() {
-        ResponseEntity<String> response = manager.getRequest("/api/v1/Consultations?select=*");
+        ResponseEntity<String> response = manager.getRequest("/rest/v1/Consultation?select=*");
         if (response.getStatusCode() == HttpStatus.OK) {
             return manager.parseConsultationList(response.getBody());
         }
