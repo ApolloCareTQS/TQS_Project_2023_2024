@@ -1,5 +1,4 @@
 package com.apollocare.backend.models;
-
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
