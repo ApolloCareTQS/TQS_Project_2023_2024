@@ -15,7 +15,7 @@ import org.springframework.util.StringUtils;
 import com.fasterxml.jackson.core.type.TypeReference;
 
 
-import com.apollocare.backend.models.Consultation;
+import com.apollocare.backend.models.*;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -45,10 +45,25 @@ public class SupabaseManager {
         return web.post().uri(uri).bodyValue(body).retrieve().toEntity(String.class).block();
     }
 
+    public ResponseEntity<String> patchRequest(String uri, String body) {
+        return web.patch().uri(uri).bodyValue(body).retrieve().toEntity(String.class).block();
+    }
+
     public List<Consultation> parseConsultationList(String responseBody) {
         if (StringUtils.hasText(responseBody)) {
             try {
                 return mapper.readValue(responseBody, new TypeReference<List<Consultation>>() {});
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return Collections.emptyList();
+    }
+
+    public List<Doctor> parseDoctorList(String responseBody) {
+        if (StringUtils.hasText(responseBody)) {
+            try {
+                return mapper.readValue(responseBody, new TypeReference<List<Doctor>>() {});
             } catch (IOException e) {
                 e.printStackTrace();
             }

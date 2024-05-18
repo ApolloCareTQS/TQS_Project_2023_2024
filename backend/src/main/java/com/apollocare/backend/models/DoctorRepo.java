@@ -1,8 +1,10 @@
 package com.apollocare.backend.models;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,11 +13,20 @@ import org.springframework.stereotype.Component;
 import com.apollocare.backend.util.SupabaseManager;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
+
 @Component
 public class DoctorRepo extends Repository {
 
     public DoctorRepo(SupabaseManager manager) {
         super(manager);
+    }
+
+    public List<Doctor> findAll() {
+        ResponseEntity<String> response = manager.getRequest("/rest/v1/Doctor?select=*");
+        if (response.getStatusCode() == HttpStatus.OK) {
+            return manager.parseDoctorList(response.getBody());
+        }
+        return Collections.emptyList();
     }
 
     public Optional<Doctor> findById(String id) throws JsonProcessingException{
