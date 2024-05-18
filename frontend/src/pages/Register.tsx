@@ -3,6 +3,25 @@ import { IonButton, IonButtons, IonCard, IonCardContent, IonCardHeader, IonCardS
 import styles from './Register.module.css';
 
 const Register: React.FC = () => {
+    const role="PATIENT";
+    const [email,setEmail]=useState(false);
+    const [password,setPassword]=useState(false);
+    const [username,setUsername]=useState(false);
+
+    const handleRegister = async() => {
+        const body={
+            role:role,
+            email:email,
+            username:username,
+            password:password
+        }
+
+        const response=await fetch("localhost:8080/auth/v1/register", { // when deploying we'll likely use docker compose so we'll have to rename this to the server container's name
+            method:"POST",
+            body: JSON.stringify(body),
+            headers: {"Content-Type":"application/json"}
+        });
+    }
     return (
         <IonPage>
             <IonHeader>
@@ -19,19 +38,16 @@ const Register: React.FC = () => {
                         <IonCardContent>
                             <IonList>
                                 <IonItem>
-                                    <IonInput labelPlacement="stacked" label="Email" placeholder="example@gmail.com"></IonInput>
+                                    <IonInput labelPlacement="stacked" label="Email" placeholder="example@gmail.com" onIonInput={(e:any)=> setEmail(e.target.value)}></IonInput>
                                 </IonItem>
                                 <IonItem>
-                                    <IonInput labelPlacement="stacked" label="Name" placeholder="Bob Alice"></IonInput>
+                                    <IonInput labelPlacement="stacked" label="Name" placeholder="Bob Alice" onIonInput={(e:any)=>setUsername(e.target.value)}></IonInput>
                                 </IonItem>
                                 <IonItem>
-                                    <IonInput label="Telephone" labelPlacement="stacked" type="tel" placeholder="888-888-8888"></IonInput>
-                                </IonItem>
-                                <IonItem>
-                                    <IonInput type="password" labelPlacement="stacked" label="Password" ></IonInput>
+                                    <IonInput type="password" labelPlacement="stacked" label="Password" onIonInput={(e:any)=>setPassword(e.target.value)}></IonInput>
                                 </IonItem>
                             </IonList>
-                            <IonButton>Register</IonButton>
+                            <IonButton onClick={handleRegister}>Register</IonButton>
                         </IonCardContent>
                     </IonCard>
                 </div>
