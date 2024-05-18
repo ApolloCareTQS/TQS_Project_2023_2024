@@ -9,18 +9,31 @@ const Register: React.FC = () => {
     const [username,setUsername]=useState(false);
 
     const handleRegister = async() => {
+        const baseUrl="localhost:8080"; // when deploying we'll likely use docker compose so we'll have to rename this to the server container's name
         const body={
             role:role,
             email:email,
             username:username,
             password:password
         }
+        console.debug(`registering with data ${body}`);
 
-        const response=await fetch("localhost:8080/auth/v1/register", { // when deploying we'll likely use docker compose so we'll have to rename this to the server container's name
+        const response=await fetch(baseUrl+"auth/v1/register", { 
             method:"POST",
             body: JSON.stringify(body),
             headers: {"Content-Type":"application/json"}
         });
+
+        switch(response.status){
+            case 200:
+                console.debug(`register successful, body: ${await response.json()}`);
+                window.location.href="/";
+                break;
+            //may add specific responses in the future
+            default:
+                console.debug(`error code: ${response.status}, error text: ${await response.json()}`);
+                alert("An unexpected error occurred");
+        }
     }
     return (
         <IonPage>
