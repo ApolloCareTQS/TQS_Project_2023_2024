@@ -3,6 +3,37 @@ import { IonButton, IonButtons, IonCard, IonCardContent, IonCardHeader, IonCardS
 import styles from './Login.module.css';
 
 const Login: React.FC = () => {
+    const role="PATIENT";
+    const [email,setEmail]=useState(false);
+    const [password,setPassword]=useState(false);
+
+    const handleRegister = async() => {
+        const baseUrl="localhost:8080"; // when deploying we'll likely use docker compose so we'll have to rename this to the server container's name
+        const body={
+            role:role,
+            email:email,
+            password:password
+        }
+        console.debug(`logging in with data ${body}`);
+
+        const response=await fetch(baseUrl+"auth/v1/login", { 
+            method:"POST",
+            body: JSON.stringify(body),
+            headers: {"Content-Type":"application/json"}
+        });
+
+        switch(response.status){
+            case 200:
+                console.debug(`login successful, body: ${await response.json()}`);
+                window.location.href="/";
+                break;
+            //may add specific responses in the future
+            default:
+                console.warn(`login failed! error code: ${response.status}, error text: ${await response.json()}`);
+                alert("An unexpected error occurred");
+        }
+    }
+    
     return (
         <IonPage>
             <IonHeader>
@@ -19,10 +50,10 @@ const Login: React.FC = () => {
                         <IonCardContent>
                             <IonList>
                                 <IonItem>
-                                    <IonInput labelPlacement="stacked" label="Email" placeholder="example@gmail.com"></IonInput>
+                                    <IonInput labelPlacement="stacked" label="Email" placeholder="example@gmail.com" onIonInput={(e:any)=> setEmail(e.target.value)}></IonInput>
                                 </IonItem>
                                 <IonItem>
-                                    <IonInput type="password" labelPlacement="stacked" label="Password" ></IonInput>
+                                    <IonInput type="password" labelPlacement="stacked" label="Password" onIonInput={(e:any)=> setPassword(e.target.value)}></IonInput>
                                 </IonItem>
                             </IonList>
                             <IonButton>Login</IonButton>

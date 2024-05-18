@@ -31,7 +31,7 @@ const Register: React.FC = () => {
                 break;
             //may add specific responses in the future
             default:
-                console.debug(`error code: ${response.status}, error text: ${await response.json()}`);
+                console.warn(`register failed! error code: ${response.status}, error text: ${await response.json()}`);
                 alert("An unexpected error occurred");
         }
     }
