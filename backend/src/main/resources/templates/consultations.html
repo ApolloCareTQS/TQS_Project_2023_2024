@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Consultations</title>
+    <!-- Add any necessary CSS styles here -->
+</head>
+<body>
+    <h1>Consultations</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Scheduled Date</th>
+                <th>Check-In Date</th>
+                <th>Reception Date</th>
+                <th>Duration</th>
+                <th>Patient ID</th>
+                <th>Doctor ID</th>
+                <th>State</th>
+                <th>Specialty</th>
+                <th>Location</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="consultation : ${consultations}">
+                <td th:text="${consultation.id}"></td>
+                <td th:text="${consultation.scheduledDate}"></td>
+                <td th:text="${consultation.checkInDate}"></td>
+                <td th:text="${consultation.receptionDate}"></td>
+                <td th:text="${consultation.duration}"></td>
+                <td th:text="${consultation.patientId}"></td>
+                <td th:text="${consultation.doctorId}"></td>
+                <td th:text="${consultation.state}"></td>
+                <td th:text="${consultation.specialty}"></td>
+                <td th:text="${consultation.location}"></td>
+                <!-- Add more table cells if needed -->
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>
