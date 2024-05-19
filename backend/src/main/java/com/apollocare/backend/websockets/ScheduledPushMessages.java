@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import com.apollocare.backend.messagingstompwebsocket.CallMessage;
 
+import java.security.SecureRandom;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Random;
@@ -15,7 +16,7 @@ public class ScheduledPushMessages {
 
     private static final String[] CALL_TYPES = {"A", "B", "C", "D"};
     private static final String[] CALL_POSTS = {"P01", "P02", "P03", "P04", "P05"};
-    private static final Random RANDOM = new Random();
+    private static final Random RANDOM = new SecureRandom();
 
     /* @todo(cobileacd): create randomizer */
 
