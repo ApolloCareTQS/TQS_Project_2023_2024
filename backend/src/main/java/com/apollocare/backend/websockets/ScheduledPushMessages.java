@@ -18,8 +18,6 @@ public class ScheduledPushMessages {
     private static final String[] CALL_POSTS = {"P01", "P02", "P03", "P04", "P05"};
     private static final Random RANDOM = new SecureRandom();
 
-    /* @todo(cobileacd): create randomizer */
-
     private final SimpMessagingTemplate simpMessagingTemplate;
 
     public ScheduledPushMessages(SimpMessagingTemplate simpMessagingTemplate) {
@@ -38,8 +36,7 @@ public class ScheduledPushMessages {
     @Scheduled(fixedRate = 5000)
     public void sendMessage() {
         CallMessage newMessage = generateMessage();
-        simpMessagingTemplate.convertAndSend("/topic/pushmessages", 
-            newMessage);
+        simpMessagingTemplate.convertAndSend("/topic/pushmessages", newMessage);
     }
     
 }
