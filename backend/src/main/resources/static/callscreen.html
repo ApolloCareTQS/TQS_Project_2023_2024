@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Callscreen WebSocket</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@stomp/stompjs@7.0.0/bundles/stomp.umd.min.js"></script>
+    <script src="js/callscreen.js"></script>
+    <style>
+        .card {
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 15px;
+            margin: 10px 0;
+        }
+
+        .card-header {
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+    <noscript>
+        <h2 style="color: #ff0000">Seems your browser doesn't support Javascript! Websocket relies on Javascript being
+            enabled. Please enable
+            Javascript and reload this page!</h2>
+    </noscript>
+    <div id="main-content" class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <form class="form-inline">
+                    <div class="form-group">
+                        <label for="connect">WebSocket connection:</label>
+                        <button id="connect" class="btn btn-default" type="submit">Connect</button>
+                        <button id="disconnect" class="btn btn-default" type="submit" disabled="disabled">Disconnect
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="row">
+            <div id="P01" class="col-md-4 card">
+                <div class="card-header">Attendance Post P01</div>
+                <div class="card-body">
+                    <p id="P01-message">Waiting for updates...</p>
+                </div>
+            </div>
+            <div id="P02" class="col-md-4 card">
+                <div class="card-header">Attendance Post P02</div>
+                <div class="card-body">
+                    <p id="P02-message">Waiting for updates...</p>
+                </div>
+            </div>
+            <div id="P03" class="col-md-4 card">
+                <div class="card-header">Attendance Post P03</div>
+                <div class="card-body">
+                    <p id="P03-message">Waiting for updates...</p>
+                </div>
+            </div>
+            <div id="P04" class="col-md-4 card">
+                <div class="card-header">Attendance Post P04</div>
+                <div class="card-body">
+                    <p id="P04-message">Waiting for updates...</p>
+                </div>
+            </div>
+            <div id="P05" class="col-md-4 card">
+                <div class="card-header">Attendance Post P05</div>
+                <div class="card-body">
+                    <p id="P05-message">Waiting for updates...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

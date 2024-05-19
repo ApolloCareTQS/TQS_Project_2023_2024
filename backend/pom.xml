@@ -72,6 +72,13 @@
 			<version>5.4.0</version>
 			<scope>test</scope>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.springframework/spring-messaging -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-messaging</artifactId>
+			<version>6.1.7</version>
+		</dependency>
+
 	</dependencies>
 
 	<build>
