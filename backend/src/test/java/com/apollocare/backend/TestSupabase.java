@@ -14,20 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.reactive.function.client.WebClient;
-
-import com.apollocare.backend.models.Doctor;
 import com.apollocare.backend.util.SupabaseManager;
 
-
-import static org.mockito.Mockito.mock;
-
-import java.util.Collections;
-import org.mockito.InjectMocks;
-
-import org.springframework.util.StringUtils;
-
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @SpringBootTest
