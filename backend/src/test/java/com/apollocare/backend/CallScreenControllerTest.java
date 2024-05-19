@@ -35,7 +35,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 @ActiveProfiles("fixedport")
 @MockBean(ScheduledPushMessages.class)
-public class CallScreenControllerTest {
+class CallScreenControllerTest {
 
     private static final Logger logger = Logger.getLogger(CallScreenControllerTest.class.getName());
 
@@ -44,7 +44,7 @@ public class CallScreenControllerTest {
     private BlockingQueue<CallMessage> blockingQueue = new LinkedBlockingDeque<>();
 
     @Test
-    public void testWebSocketConnection() throws Exception {
+    void testWebSocketConnection() throws Exception {
         stompClient = new WebSocketStompClient(new SockJsClient(List.of(new WebSocketTransport(new StandardWebSocketClient()))));
         stompClient.setMessageConverter(new MappingJackson2MessageConverter());
 
