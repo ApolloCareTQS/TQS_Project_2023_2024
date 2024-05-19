@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Consultations</title>
+</head>
+<body>
+    <h1>Consultations</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Scheduled Date</th>
+                <th>Check-In Date</th>
+                <th>Reception Date</th>
+                <th>Duration</th>
+                <th>Patient ID</th>
+                <th>Doctor ID</th>
+                <th>State</th>
+                <th>Specialty</th>
+                <th>Location</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="consultation : ${consultations}">
+                <td th:text="${consultation.id}"></td>
+                <td class="scheduled-date" th:text="${consultation.scheduledDate}"></td>
+                <td class="scheduled-date" th:text="${consultation.checkInDate}"></td>
+                <td th:text="${consultation.receptionDate}"></td>
+                <td th:text="${consultation.duration}"></td>
+                <td th:text="${consultation.patientId}"></td>
+                <td th:text="${consultation.doctorId}"></td>
+                <td th:text="${consultation.state}"></td>
+                <td th:text="${consultation.specialty}"></td>
+                <td th:text="${consultation.location}"></td>
+                <td>
+                    <form th:action="@{/admin/v1/checkin}" method="post">
+                        <input type="hidden" name="id" th:value="${consultation.id}" />
+                        <button type="submit">Check-In</button>
+                    </form>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <script>
+        var dateElements = document.querySelectorAll('.scheduled-date');
+
+        dateElements.forEach(function(element) {
+            var timestamp = parseInt(element.textContent); 
+            var date = new Date(timestamp);
+            var formattedDate = date.toLocaleString('pt-PT', { timeZone: 'UTC' }); 
+
+            element.textContent = formattedDate;
+        });
+    </script>
+</body>
+</html>

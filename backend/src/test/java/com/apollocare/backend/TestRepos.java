@@ -4,6 +4,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -12,7 +15,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -96,5 +98,22 @@ class TestRepos {
         assertEquals(Optional.empty(), patientRepo.findById("abc123"));
         assertEquals(Optional.empty(), staffRepo.findById("abc123"));
         assertEquals(Optional.empty(), doctorRepo.findById("abc123"));
+    }
+
+    @Test
+    void testDoctorFindAll() {
+        String jsonResponse = "[{\"id\":\"abc123\",\"email\":\"johndoe@email.com\",\"name\":\"John Doe\",\"clinic\":\"apolloClinic\",\"specialty\":\"cardiovascular\"}]";
+        when(manager.getRequest("/rest/v1/Doctor?select=*")).thenReturn(new ResponseEntity<>(jsonResponse, HttpStatus.OK));
+        when(manager.parseDoctorList(jsonResponse)).thenReturn(Arrays.asList(doctor));
+
+        List<Doctor> expectedDoctors = Arrays.asList(doctor);
+        assertEquals(expectedDoctors, doctorRepo.findAll());
+    }
+
+    @Test
+    void testDoctorFindAllEmptyList() {
+        when(manager.getRequest("/rest/v1/Doctor?select=*")).thenReturn(new ResponseEntity<>("", HttpStatus.INTERNAL_SERVER_ERROR));
+        List<Doctor> expectedDoctors = Collections.emptyList();
+        assertEquals(expectedDoctors, doctorRepo.findAll());
     }
 }
