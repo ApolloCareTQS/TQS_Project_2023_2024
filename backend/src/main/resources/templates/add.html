@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Consultation</title>
+</head>
+<body>
+    <h2>Add Consultation</h2>
+    
+    <!-- Listar todos os médicos antes do formulário -->
+    <h3>Doctors List</h3>
+    <ul>
+        <li th:each="doctor : ${doctors}">
+            <span th:text="${doctor.name} + ' (' + ${doctor.specialty} + ', ' + ${doctor.clinic} + ')'"></span>
+        </li>
+    </ul>
+    
+    <form th:action="@{/admin/v1/add}" th:object="${consultation}" method="post">
+
+        <label for="scheduledDate">Scheduled Date:</label>
+        <input type="datetime-local" id="scheduledDateInput" placeholder="Scheduled Date"/>
+        <input type="hidden" id="scheduledDate" th:field="*{scheduledDate}" value="" />
+
+        <label for="checkInDate">Check In Date:</label>
+        <input type="text" id="checkInDate" th:field="*{checkInDate}" placeholder="Check In Date"/><br>
+        
+        <label for="receptionDate">Reception Date:</label>
+        <input type="text" id="receptionDate" th:field="*{receptionDate}" placeholder="Reception Date"/><br>
+        
+        <label for="duration">Duration:</label>
+        <input type="number" id="duration" th:field="*{duration}" placeholder="Duration"/><br>
+        
+        <label for="patientId">Patient ID:</label>
+        <input type="text" id="patientId" th:field="*{patientId}" placeholder="Patient ID"/><br>
+        
+        <label for="doctorId">Doctor:</label>
+        <select id="doctorId" th:field="*{doctorId}">
+            <option th:each="doctor : ${doctors}" 
+                    th:value="${doctor.id}" 
+                    th:text="${doctor.name} + ' (' + ${doctor.specialty} + ', ' + ${doctor.clinic} + ')'"></option>
+        </select><br>
+        
+        <label for="state">State:</label>
+        <input type="text" id="state" th:field="*{state}" placeholder="State"/><br>
+        
+        <label for="specialty">Specialty:</label>
+        <input type="text" id="specialty" th:field="*{specialty}" placeholder="Specialty"/><br>
+        
+        <label for="location">Location:</label>
+        <input type="text" id="location" th:field="*{location}" placeholder="Location"/><br>
+
+        <button type="submit">Submit</button>
+    </form>
+
+    <script th:inline="javascript">
+        var scheduledDateInput = document.getElementById('scheduledDateInput');
+        scheduledDateInput.addEventListener('change', function() {
+            var selectedDateTime = new Date(this.value).getTime();
+            document.getElementById('scheduledDate').value = selectedDateTime;
+        });
+    </script>
+</body>
+</html>

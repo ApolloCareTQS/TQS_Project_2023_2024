@@ -1,8 +1,13 @@
-/*
 package com.apollocare.backend.controller;
 
 import java.util.List;
+import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,6 +23,9 @@ import com.apollocare.backend.service.ConsultationService;
 @RequestMapping("/api/v1")
 public class ApolloController {
 
+    private static final Logger logger = LoggerFactory.getLogger(ApolloController.class);
+
+
     private final ConsultationService cService;
 
     public ApolloController(ConsultationService cService) {
@@ -25,24 +33,47 @@ public class ApolloController {
     }
 
     @GetMapping("/consultations")
-    public List<Consultation> getAllConsultations() {
-        return cService.findAllConsultations();
+    public ResponseEntity<List<Consultation>> getAllConsultations() {
+        List<Consultation> consultations = cService.findAllConsultations();
+        return ResponseEntity.ok(consultations);
     }
-    //TODO: change to ResponseEntity<...> everything that might return a non-500 error (mainly post requests). Also, non-list values will be returned as Optional's to avoid nulls, so properly handle them (if getting muyltiple values, an empty list will be returned instead)
-    @PostMapping("/add")
-    public Consultation addConsultation(@RequestBody Consultation Consultation) {
-        return cService.schedule(Consultation).get();
+
+    @PostMapping("/consultations/add")
+    public ResponseEntity<Consultation> addConsultation(@RequestBody Consultation consultation) {
+        try {
+            Optional<Consultation> optionalConsultation = cService.schedule(consultation);
+            return optionalConsultation.map(ResponseEntity::ok)
+                                       .orElseGet(() -> {
+                                           logger.error("Failed to schedule consultation");
+                                           return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+                                       });
+        } catch (Exception e) {
+            logger.error("An error occurred while adding the consultation", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @PostMapping("/checkin/{id}")
+    public ResponseEntity<String> checkInConsultation(@PathVariable("id") Long id) {
+        try {
+            cService.checkInConsultation(id);
+            return ResponseEntity.ok("Check-in successful");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Check-in failed");
+        }
     }
 
     @GetMapping("/consultations/{id}")
-    public Consultation getConsultationById(@PathVariable Long id) {
-        return cService.getConsultationById(id).get();
+    public ResponseEntity<Consultation> getConsultationById(@PathVariable Long id) {
+        Optional<Consultation> optionalConsultation = cService.getConsultationById(id);
+        return optionalConsultation.map(ResponseEntity::ok)
+                                   .orElse(ResponseEntity.notFound().build());
     }
 
     @DeleteMapping("/delete/{id}")
-    public void deleteConsultation(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteConsultation(@PathVariable Long id) {
         cService.deleteConsultation(id);
+        return ResponseEntity.noContent().build();
     }
 
 }
-*/
