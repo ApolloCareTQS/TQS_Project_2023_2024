@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -16,14 +18,14 @@ import com.fasterxml.jackson.core.type.TypeReference;
 
 
 import com.apollocare.backend.models.*;
-
-
 import com.fasterxml.jackson.databind.ObjectMapper;
+
 
 
 @Component
 public class SupabaseManager {
 
+    private static final Logger logger=LogManager.getLogger();
     private final WebClient web;
     private final ObjectMapper mapper = new ObjectMapper();
 
@@ -54,7 +56,7 @@ public class SupabaseManager {
             try {
                 return mapper.readValue(responseBody, new TypeReference<List<Consultation>>() {});
             } catch (IOException e) {
-                e.printStackTrace();
+                logger.error("Failed to parse consultation list", e);
             }
         }
         return Collections.emptyList();
@@ -65,7 +67,7 @@ public class SupabaseManager {
             try {
                 return mapper.readValue(responseBody, new TypeReference<List<Doctor>>() {});
             } catch (IOException e) {
-                e.printStackTrace();
+                logger.error("Failed to parse doctor list", e);
             }
         }
         return Collections.emptyList();

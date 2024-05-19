@@ -22,14 +22,9 @@ public class ConsultationRepo extends Repository{
 
     public Optional<Consultation> insert(Consultation consultation) throws JsonProcessingException{
         Map<String, Object> body = new HashMap<>();
-        //body.put("id", consultation.getId());
         body.put("scheduledDate", consultation.getScheduledDate());
-        //body.put("checkInDate", consultation.getCheckInDate());
-        //body.put("receptionDate", consultation.getReceptionDate());
-        //body.put("duration", consultation.getDuration());
         body.put("patientId", consultation.getPatientId());
         body.put("doctorId", consultation.getDoctorId());
-        //body.put("state", consultation.getState());
         body.put("specialty", consultation.getSpecialty());
         body.put("location", consultation.getLocation());
         logger.debug("id: {} -> insert called",consultation.getId());

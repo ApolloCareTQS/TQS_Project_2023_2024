@@ -11,13 +11,16 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -102,5 +105,16 @@ class TestApolloController {
 
         mockMvc.perform(MockMvcRequestBuilders.delete("/api/v1/delete/{id}", consultationId))
                 .andExpect(status().isNoContent());
+    }
+
+    @Test
+    void testAddConsultationCatchBlock() {
+        Consultation consultation = new Consultation();
+        consultation.setId(1L);
+        when(consultationService.schedule(consultation)).thenThrow(new RuntimeException("Test Exception"));
+
+        ResponseEntity<Consultation> response = apolloController.addConsultation(consultation);
+
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
     }
 }

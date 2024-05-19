@@ -75,7 +75,7 @@ class TestConsultationRepo {
     }
 
     @Test
-    void testFindAll() throws JsonProcessingException {
+    void testFindAll(){
         when(manager.getRequest(any())).thenReturn(new ResponseEntity<>(
                 "[{\"id\":1,\"scheduledDate\":\" 1718748935000\",\"patientId\":\"abc123\",\"doctorId\":\"def456\",\"specialty\":\"cardiology\",\"location\":\" Lisbon\"}]", HttpStatus.OK));
         List<Consultation> expectedConsultations = Collections.singletonList(consultation);
@@ -84,7 +84,7 @@ class TestConsultationRepo {
     }
 
     @Test
-    void testFindAllErrorCode() throws JsonProcessingException {
+    void testFindAllErrorCode(){
         when(manager.getRequest(any())).thenReturn(new ResponseEntity<>(HttpStatus.TOO_MANY_REQUESTS));
         assertEquals(Collections.emptyList(), consultationRepo.findAll());
     }

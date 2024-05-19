@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 
 import com.apollocare.backend.models.Consultation;
 
-public class TestModel {
+class TestModel {
     @Test
     void testEqualsAndHashCode() {
         Consultation consultation1 = new Consultation(1L, 123456789L, 0L, 0L, 30, "patient1", "doctor1", "state1", "specialty1", "location1");
