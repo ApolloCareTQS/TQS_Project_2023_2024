@@ -1,0 +1,16 @@
+services:
+  backend:
+    container_name: backend
+    build: ./backend
+    working_dir: /app
+    ports:
+      - "8080:8080"
+    command: mvn spring-boot:run
+
+  frontend:
+    container_name: frontend
+    build: ./frontend
+    working_dir: /app
+    ports: 
+      - "8100:8100"
+    command: ionic serve --external
