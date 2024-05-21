@@ -10,7 +10,6 @@ import org.springframework.stereotype.Component;
 
 import com.apollocare.backend.util.SupabaseManager;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 
 @Component
 public class StaffRepo extends Repository {

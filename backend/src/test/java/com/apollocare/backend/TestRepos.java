@@ -1,9 +1,11 @@
 package com.apollocare.backend;
 
+import static com.apollocare.backend.util.State.CHECKED_OUT;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -21,6 +23,7 @@ import org.springframework.http.ResponseEntity;
 import com.apollocare.backend.models.*;
 import com.apollocare.backend.util.SupabaseManager;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @ExtendWith(MockitoExtension.class)
 class TestRepos {
@@ -33,6 +36,8 @@ class TestRepos {
     private StaffRepo staffRepo;
     @InjectMocks
     private DoctorRepo doctorRepo;
+    @InjectMocks
+    private ConsultationRepo consultationRepo;
 
     private Patient patient;
     private Doctor doctor;
@@ -116,4 +121,32 @@ class TestRepos {
         List<Doctor> expectedDoctors = Collections.emptyList();
         assertEquals(expectedDoctors, doctorRepo.findAll());
     }
+
+    @Test
+    void testConsultationFindAllByPatientIdAndState() throws JsonProcessingException{
+        Consultation consultation1=new Consultation();
+        consultation1.setId(1L);
+        consultation1.setPatientId("123abc");
+        consultation1.setState(CHECKED_OUT.name());
+
+        Consultation consultation2=new Consultation();
+        consultation2.setId(2L);
+        consultation2.setPatientId("123abc");
+        consultation2.setState(CHECKED_OUT.name());
+
+        List<Consultation> consultations=new ArrayList<>();
+        consultations.add(consultation1);
+        consultations.add(consultation2);
+
+        ObjectMapper mapper=new ObjectMapper();
+        when(manager.getRequest("/rest/v1/Consultation?and=(patientId.eq.123abc,state.eq.CHECKED_OUT)&select=*")).thenReturn(new ResponseEntity<>(mapper.writeValueAsString(consultations), HttpStatus.OK));
+        assertEquals(Collections.emptyList(), consultationRepo.findAllByPatientIDAndState("123abc", CHECKED_OUT));
+    }
+
+    @Test
+    void testConsultationFindAllByPatientIdAndStateEmptyList(){
+        when(manager.getRequest("/rest/v1/Consultation?and=(patientId.eq.123abc,state.eq.CHECKED_OUT)&select=*")).thenReturn(new ResponseEntity<>("", HttpStatus.INTERNAL_SERVER_ERROR));
+        assertEquals(Collections.emptyList(), consultationRepo.findAllByPatientIDAndState("123abc", CHECKED_OUT));
+    }
+    
 }
