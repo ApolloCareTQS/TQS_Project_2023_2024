@@ -1,5 +1,6 @@
 package com.apollocare.backend.controller;
 
+import java.util.Collections;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -28,8 +29,8 @@ public class UserDataController {
     @GetMapping("/history")
     public ResponseEntity<List<Consultation>> getHistory(@CookieValue(name="token",required=false) String patientId){
         if(patientId==null){
-            logger.warn("/history: User not logged in")
-            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+            logger.warn("/history: User not logged in");
+            return new ResponseEntity<>(Collections.emptyList(),HttpStatus.UNAUTHORIZED);
         }else{
             return new ResponseEntity<>(service.getConsultationHistory(patientId),HttpStatus.OK);
         }
