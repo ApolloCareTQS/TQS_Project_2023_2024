@@ -41,10 +41,11 @@ class TestClinic {
         Clinic clinic2 = new Clinic("AVEIRO");
         Clinic clinic3 = new Clinic("PORTO");
 
-        assertThat(clinic1).isEqualTo(clinic2);
-        assertThat(clinic1).isNotEqualTo(clinic3);
+        assertThat(clinic1)
+            .isEqualTo(clinic2)
+            .isNotEqualTo(clinic3);
 
-        assertThat(clinic1.hashCode()).isEqualTo(clinic2.hashCode());
+        assertThat(clinic1).hasSameHashCodeAs(clinic2);
         assertThat(clinic1.hashCode()).isNotEqualTo(clinic3.hashCode());
     }
 }

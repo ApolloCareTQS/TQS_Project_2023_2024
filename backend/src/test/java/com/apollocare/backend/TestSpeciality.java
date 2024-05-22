@@ -32,7 +32,7 @@ class TestSpeciality {
     @Test
     void testToString() {
         Specialty specialty = new Specialty("Dermatology");
-        assertThat(specialty.toString()).isEqualTo("Specialty(name=Dermatology)");
+        assertThat(specialty).hasToString("Specialty(name=Dermatology)");
     }
 
     @Test

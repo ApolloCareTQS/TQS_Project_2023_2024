@@ -87,7 +87,8 @@ public class AdminController {
 
     @GetMapping("/search_patients")
     public String searchPatients(@RequestParam String name, Model model) {
-        List<Patient> patients = cService.findPatientsByName(name);
+        String sanitizedName = name.replaceAll("[\n\r]", "_");
+        List<Patient> patients = cService.findPatientsByName(sanitizedName);
         model.addAttribute("patients", patients);
         return "patients";
     }

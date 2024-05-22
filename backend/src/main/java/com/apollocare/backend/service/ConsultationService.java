@@ -54,8 +54,9 @@ public class ConsultationService {
     }
 
     public List<Patient> findPatientsByName(String name) {
-        logger.info("Finding patients by name: {}", name);
-        return consultationRepo.findPatientByNameLike(name);
+        String nameclean = name.replaceAll("[\n\r]", "_");
+        logger.info("Finding patients by name: {}", nameclean);
+        return consultationRepo.findPatientByNameLike(nameclean);
     }
 
     public List<Consultation> findConsultationsByPatientId(String id) {
