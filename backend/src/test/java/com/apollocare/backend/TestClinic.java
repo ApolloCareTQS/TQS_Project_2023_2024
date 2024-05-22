@@ -32,7 +32,7 @@ class TestClinic {
     @Test
     void testToString() {
         Clinic clinic = new Clinic("AVEIRO");
-        assertThat(clinic.toString()).isEqualTo("Clinic(location=AVEIRO)");
+        assertThat(clinic.toString()).hasToString("Clinic(location=AVEIRO)");
     }
 
     @Test

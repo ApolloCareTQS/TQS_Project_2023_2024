@@ -24,6 +24,7 @@ import com.apollocare.backend.service.ConsultationService;
 @RequestMapping("/admin/v1")
 public class AdminController {
 
+    private static final String CONSULTATIONS = "consultations";
     private final ConsultationService cService;
 
     public AdminController(ConsultationService cService) {
@@ -38,15 +39,15 @@ public class AdminController {
     @GetMapping("/all")
     public String getAllConsultations(Model model) {
         List<Consultation> consultations = cService.findAllConsultations();
-        model.addAttribute("consultations", consultations);
-        return "consultations";
+        model.addAttribute(CONSULTATIONS, consultations);
+        return CONSULTATIONS;
     }
 
     @GetMapping("/patient_consultations")
     public String getPatientConsultations(@RequestParam("patientId") String id, Model model) {
         List<Consultation> consultations = cService.findConsultationsByPatientId(id);
-        model.addAttribute("consultations", consultations);
-        return "consultations";
+        model.addAttribute(CONSULTATIONS, consultations);
+        return CONSULTATIONS;
     }
 
     @GetMapping("/form")

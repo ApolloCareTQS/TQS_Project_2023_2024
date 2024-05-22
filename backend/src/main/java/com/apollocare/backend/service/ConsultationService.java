@@ -115,7 +115,6 @@ public class ConsultationService {
                 long durationstamp = System.currentTimeMillis() - consultation.getCheckInDate();// depois alterar para repecptionDate
                 int duration = (int) (durationstamp / (1000 * 60));
                 consultation.setDuration(duration);
-                //consultation.setCheckOutDate(System.currentTimeMillis());
                 consultation.setState("CHECKED_OUT");
                 consultationRepo.update(consultation);
                 logger.info("Consultation checked in successfully: ID {}", id);
