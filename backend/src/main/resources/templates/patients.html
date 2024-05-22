@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Patients</title>
+</head>
+<body>
+    <h1>Patients</h1>
+    <nav>
+        <ul>
+            <li><a th:href="@{/admin/v1/}">Home</a></li>
+            <li><a th:href="@{/admin/v1/form}">Form</a></li>
+            <li><a th:href="@{/admin/v1/all}">All Consultations</a></li>
+        </ul>
+    </nav>
+    
+    <!-- Formulário de busca -->
+    <form th:action="@{/admin/v1/search_patients}" method="get">
+        <label for="patient-search">Search by Patient Name:</label>
+        <input type="text" id="patient-search" name="name" placeholder="Enter Patient Name">
+        <button type="submit">Search</button>
+    </form>
+
+    <!-- Tabela de resultados da busca -->
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="patient : ${patients}">
+                <td th:text="${patient.id}"></td>
+                <td th:text="${patient.name}"></td>
+                <td th:text="${patient.email}"></td>
+                <td>
+                    <a th:href="@{/admin/v1/patient_consultations(patientId=${patient.id})}">View Consultations</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>

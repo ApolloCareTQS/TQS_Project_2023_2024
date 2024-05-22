@@ -89,6 +89,38 @@ public class ConsultationRepo extends Repository{
         return Collections.emptyList();
     }
 
+    public List<Clinic> findAllClinics() {
+        ResponseEntity<String> response = manager.getRequest("/rest/v1/Clinic?select=*");
+        if (response.getStatusCode() == HttpStatus.OK) {
+            return manager.parseClinicList(response.getBody());
+        }
+        return Collections.emptyList();
+    }
+
+    public List<Specialty> findAllSpecialties() {
+        ResponseEntity<String> response = manager.getRequest("/rest/v1/Specialty?select=*");
+        if (response.getStatusCode() == HttpStatus.OK) {
+            return manager.parseSpecialtyList(response.getBody());
+        }
+        return Collections.emptyList();
+    }
+
+    public List<Patient> findPatientByNameLike(String name) {
+        ResponseEntity<String> response = manager.getRequest("/rest/v1/Patient?select=*&name=ilike.%" + name + "%");
+        if (response.getStatusCode() == HttpStatus.OK) {
+            return manager.parsePatientList(response.getBody());
+        }
+        return Collections.emptyList();
+    }
+
+    public List<Consultation> findConsultationsByPatientId(String id) {
+        ResponseEntity<String> response = manager.getRequest("/rest/v1/Consultation?select=*&patientId=eq." + id);
+        if (response.getStatusCode() == HttpStatus.OK) {
+            return manager.parseConsultationList(response.getBody());
+        }
+        return Collections.emptyList();
+    }
+
 
     
 }

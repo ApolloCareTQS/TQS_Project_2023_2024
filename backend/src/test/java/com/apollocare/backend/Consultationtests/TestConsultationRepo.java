@@ -39,14 +39,14 @@ class TestConsultationRepo {
         consultation.setScheduledDate(1718748935000L);
         consultation.setPatientId("abc123");
         consultation.setDoctorId("def456");
-        consultation.setSpecialty("cardiology");
-        consultation.setLocation(" Lisbon");
+        consultation.setSpecialty("ORTOPEDIA");
+        consultation.setLocation("LISBOA");
     }
 
     @Test
     void testFindById() throws JsonProcessingException {
         when(manager.getRequest(any())).thenReturn(new ResponseEntity<>(
-                "[{\"id\":1,\"scheduledDate\":\" 1718748935000\",\"patientId\":\"abc123\",\"doctorId\":\"def456\",\"specialty\":\"cardiology\",\"location\":\" Lisbon\"}]", HttpStatus.OK));
+                "[{\"id\":1,\"scheduledDate\":\" 1718748935000\",\"patientId\":\"abc123\",\"doctorId\":\"def456\",\"specialty\":\"ORTOPEDIA\",\"location\":\"LISBOA\"}]", HttpStatus.OK));
         assertEquals(Optional.of(consultation), consultationRepo.findById(1L));
     }
 

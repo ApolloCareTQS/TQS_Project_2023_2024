@@ -7,11 +7,13 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 
+import com.apollocare.backend.models.Clinic;
 import com.apollocare.backend.models.Consultation;
 import com.apollocare.backend.models.ConsultationRepo;
 import com.apollocare.backend.models.Doctor;
 import com.apollocare.backend.models.DoctorRepo;
 import com.apollocare.backend.models.PatientRepo;
+import com.apollocare.backend.models.Specialty;
 import com.apollocare.backend.models.Patient;
 
 
@@ -39,6 +41,26 @@ public class ConsultationService {
     public List<Consultation> findAllConsultations() {
         logger.info("Finding all consultations");
         return consultationRepo.findAll();
+    }
+
+    public List<Clinic> findAllClinics() {
+        logger.info("Finding all clinics");
+        return consultationRepo.findAllClinics();
+    }
+
+    public List<Specialty> findAllSpecialties() {
+        logger.info("Finding all Specialties");
+        return consultationRepo.findAllSpecialties();
+    }
+
+    public List<Patient> findPatientsByName(String name) {
+        logger.info("Finding patients by name: {}", name);
+        return consultationRepo.findPatientByNameLike(name);
+    }
+
+    public List<Consultation> findConsultationsByPatientId(String id) {
+        logger.info("Finding consultations by patient ID: {}", id);
+        return consultationRepo.findConsultationsByPatientId(id);
     }
 
     public Optional<Consultation> schedule(Consultation consultation) {
@@ -82,6 +104,26 @@ public class ConsultationService {
             }
         } catch (Exception e) {
             logger.error("Error while checking in consultation with ID {}: {}", id, e.getMessage());
+        }
+    }
+
+    public void checkOutConsultation(Long id) {
+        try {
+            Optional<Consultation> c = consultationRepo.findById(id);
+            if (c.isPresent() && c.get().getState().equals("CHECKED_IN")) {
+                Consultation consultation = c.get();
+                long durationstamp = System.currentTimeMillis() - consultation.getCheckInDate();// depois alterar para repecptionDate
+                int duration = (int) (durationstamp / (1000 * 60));
+                consultation.setDuration(duration);
+                //consultation.setCheckOutDate(System.currentTimeMillis());
+                consultation.setState("CHECKED_OUT");
+                consultationRepo.update(consultation);
+                logger.info("Consultation checked in successfully: ID {}", id);
+            } else {
+                logger.error("Consultation with ID {} not found for checkout", id);
+            }
+        } catch (Exception e) {
+            logger.error("Error while finishing in consultation with ID {}: {}", id, e.getMessage());
         }
     }
 

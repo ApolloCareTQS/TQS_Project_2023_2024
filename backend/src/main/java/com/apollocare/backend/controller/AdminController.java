@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.apollocare.backend.models.Consultation;
 import com.apollocare.backend.models.Doctor;
+import com.apollocare.backend.models.Patient;
 import com.apollocare.backend.service.ConsultationService;
 
 @Controller
@@ -29,9 +30,21 @@ public class AdminController {
         this.cService = cService;
     }
 
+    @GetMapping("/")
+    public String index() {
+        return "index";
+    }
+
     @GetMapping("/all")
     public String getAllConsultations(Model model) {
         List<Consultation> consultations = cService.findAllConsultations();
+        model.addAttribute("consultations", consultations);
+        return "consultations";
+    }
+
+    @GetMapping("/patient_consultations")
+    public String getPatientConsultations(@RequestParam("patientId") String id, Model model) {
+        List<Consultation> consultations = cService.findConsultationsByPatientId(id);
         model.addAttribute("consultations", consultations);
         return "consultations";
     }
@@ -40,6 +53,8 @@ public class AdminController {
     public String showAddConsultationForm(Model model) {
         List<Doctor> doctors = cService.findAllDoctors();
         model.addAttribute("doctors", doctors);
+        model.addAttribute("clinics", cService.findAllClinics());
+        model.addAttribute("specialties", cService.findAllSpecialties());
         model.addAttribute("consultation", new Consultation());
         return "add";
     }
@@ -56,11 +71,24 @@ public class AdminController {
         return "redirect:/admin/v1/all";
     }
 
+    @PostMapping("/checkout")
+    public String checkOutConsultation(@RequestParam("id") Long id) {
+        cService.checkOutConsultation(id);
+        return "redirect:/admin/v1/all";
+    }
+
     @GetMapping("/consultations/{id}")
     public ResponseEntity<Consultation> getConsultationById(@PathVariable Long id) {
         Optional<Consultation> optionalConsultation = cService.getConsultationById(id);
         return optionalConsultation.map(ResponseEntity::ok)
                                    .orElse(ResponseEntity.notFound().build());
+    }
+
+    @GetMapping("/search_patients")
+    public String searchPatients(@RequestParam String name, Model model) {
+        List<Patient> patients = cService.findPatientsByName(name);
+        model.addAttribute("patients", patients);
+        return "patients";
     }
 
     @DeleteMapping("/delete/{id}")
