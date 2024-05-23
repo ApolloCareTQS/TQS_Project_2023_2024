@@ -43,9 +43,9 @@ class TestClinic {
 
         assertThat(clinic1)
             .isEqualTo(clinic2)
-            .isNotEqualTo(clinic3);
-
-        assertThat(clinic1).hasSameHashCodeAs(clinic2);
+            .isNotEqualTo(clinic3)
+            .hasSameHashCodeAs(clinic2);
+            
         assertThat(clinic1.hashCode()).isNotEqualTo(clinic3.hashCode());
     }
 }

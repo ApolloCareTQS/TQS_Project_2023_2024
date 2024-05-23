@@ -171,7 +171,6 @@ class TestConsultationService {
     @Test
     void testCheckOutConsultation() throws JsonProcessingException {
         long id = 123L;
-        Consultation consultation = new Consultation();
         consultation.setState("CHECKED_IN"); 
         when(consultationRepo.findById(id)).thenReturn(Optional.of(consultation));
     
