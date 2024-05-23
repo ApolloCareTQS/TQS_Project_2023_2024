@@ -45,7 +45,8 @@ public class AdminController {
 
     @GetMapping("/patient_consultations")
     public String getPatientConsultations(@RequestParam("patientId") String id, Model model) {
-        List<Consultation> consultations = cService.findConsultationsByPatientId(id);
+        String sanitizedId = id.replaceAll("[\n\r]", "_");
+        List<Consultation> consultations = cService.findConsultationsByPatientId(sanitizedId);
         model.addAttribute(CONSULTATIONS, consultations);
         return CONSULTATIONS;
     }

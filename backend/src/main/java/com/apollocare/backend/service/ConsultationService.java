@@ -60,8 +60,9 @@ public class ConsultationService {
     }
 
     public List<Consultation> findConsultationsByPatientId(String id) {
-        logger.info("Finding consultations by patient ID: {}", id);
-        return consultationRepo.findConsultationsByPatientId(id);
+        String idclean = id.replaceAll("[\n\r]", "_");
+        logger.info("Finding consultations by patient ID: {}", idclean);
+        return consultationRepo.findConsultationsByPatientId(idclean);
     }
 
     public Optional<Consultation> schedule(Consultation consultation) {
