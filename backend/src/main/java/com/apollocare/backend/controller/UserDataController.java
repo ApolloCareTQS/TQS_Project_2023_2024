@@ -35,4 +35,14 @@ public class UserDataController {
             return new ResponseEntity<>(service.getConsultationHistory(patientId),HttpStatus.OK);
         }
     }
+
+    @GetMapping("/scheduled")
+    public ResponseEntity<List<Consultation>> getScheduled(@CookieValue(name="token",required=false) String patientId){
+        if(patientId==null){
+            logger.warn("/scheduled: User not logged in");
+            return new ResponseEntity<>(Collections.emptyList(),HttpStatus.UNAUTHORIZED);
+        }else{
+            return new ResponseEntity<>(service.getConsultationScheduled(patientId),HttpStatus.OK);
+        }
+    }
 }

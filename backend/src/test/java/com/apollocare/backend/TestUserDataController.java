@@ -15,7 +15,6 @@ import static org.mockito.Mockito.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hamcrest.Matcher;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -25,7 +24,7 @@ import static io.restassured.module.mockmvc.RestAssuredMockMvc.given;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class TestUserDataController {
+class TestUserDataController {
     @Autowired
     private MockMvc mock;
 
@@ -40,6 +39,7 @@ public class TestUserDataController {
     private Consultation consultation3;
 
     private List<Consultation> historyList;
+    private List<Consultation> scheduledList;
 
     @BeforeEach
     void setup(){
@@ -62,7 +62,8 @@ public class TestUserDataController {
         historyList.add(consultation1);
         historyList.add(consultation2);
 
-
+        scheduledList=new ArrayList<>();
+        scheduledList.add(consultation3);
     }
 
     @Test
@@ -85,6 +86,31 @@ public class TestUserDataController {
             .mockMvc(mock)
         .when()
             .get("/api/v1/user/history")
+        .then()
+            .statusCode(401)
+            .body("$",Matchers.hasSize(0));   
+    }
+
+    @Test
+    void testGetScheduled(){
+        when(service.getConsultationScheduled("123abc")).thenReturn(scheduledList);
+        given()
+            .mockMvc(mock)
+            .cookie("token","123abc")
+        .when()
+            .get("/api/v1/user/scheduled")
+        .then()
+            .statusCode(200)
+            .body("$",Matchers.hasSize(1));
+    }
+
+    @Test
+    void testGetScheduledNoToken(){
+        when(service.getConsultationScheduled("123abc")).thenReturn(scheduledList);
+        given()
+            .mockMvc(mock)
+        .when()
+            .get("/api/v1/user/scheduled")
         .then()
             .statusCode(401)
             .body("$",Matchers.hasSize(0));   

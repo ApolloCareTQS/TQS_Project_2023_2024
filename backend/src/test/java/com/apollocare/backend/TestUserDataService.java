@@ -60,4 +60,14 @@ class TestUserDataService {
         List<Consultation> result=service.getConsultationHistory("123abc");
         assertEquals(2, result.size());
     }
+
+    @Test
+    void testGetScheduled(){
+        List<Consultation> consultationList=new ArrayList<>();
+        consultationList.add(consultation3);
+
+        when(consultationRepo.findAllByPatientIDAndState("123abc",SCHEDULED)).thenReturn(consultationList);
+        List<Consultation> result=service.getConsultationScheduled("123abc");
+        assertEquals(1, result.size());
+    }
 }

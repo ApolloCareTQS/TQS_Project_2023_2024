@@ -1,6 +1,6 @@
 package com.apollocare.backend.service;
 
-import static com.apollocare.backend.util.State.CHECKED_OUT;
+import static com.apollocare.backend.util.State.*;
 
 import java.util.List;
 
@@ -22,5 +22,9 @@ public class UserDataService {
 
     public List<Consultation> getConsultationHistory(String patientId){
         return consultationRepo.findAllByPatientIDAndState(patientId, CHECKED_OUT);
+    }
+
+    public List<Consultation> getConsultationScheduled(String patientId){
+        return consultationRepo.findAllByPatientIDAndState(patientId,SCHEDULED);
     }
 }
