@@ -8,6 +8,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -20,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.apollocare.backend.controller.AdminController;
 import com.apollocare.backend.models.Consultation;
+import com.apollocare.backend.models.Patient;
 import com.apollocare.backend.service.ConsultationService;
 
 @WebMvcTest(AdminController.class)
@@ -89,5 +91,46 @@ class AdminControllerTest {
         mockMvc.perform(delete("/admin/v1/delete/1"))
                .andExpect(status().isNoContent());
         verify(cService).deleteConsultation(1L);
+    
     }
+
+    @Test
+    void testSearchPatients() throws Exception {
+        String searchTerm = "John Doe";
+        List<Patient> patients = Collections.singletonList(new Patient());
+        when(cService.findPatientsByName(toString())).thenReturn(patients);
+
+        mockMvc.perform(get("/admin/v1/search_patients").param("name", searchTerm))
+               .andExpect(status().isOk())
+               .andExpect(view().name("patients"))
+               .andExpect(model().attributeExists("patients"));
+    }
+
+    @Test
+    void testCheckOutConsultation() throws Exception {
+        mockMvc.perform(post("/admin/v1/checkout").param("id", "1"))
+               .andExpect(status().is3xxRedirection())
+               .andExpect(redirectedUrl("/admin/v1/all"));
+        verify(cService).checkOutConsultation(1L);
+    }
+
+    @Test
+    void testGetPatientConsultations() throws Exception {
+        String patientId = "patient123";
+        List<Consultation> consultations = Collections.singletonList(new Consultation());
+        when(cService.findConsultationsByPatientId(patientId)).thenReturn(consultations);
+
+        mockMvc.perform(get("/admin/v1/patient_consultations").param("patientId", patientId))
+               .andExpect(status().isOk())
+               .andExpect(view().name("consultations"))
+               .andExpect(model().attributeExists("consultations"));
+    }
+
+    @Test
+    void testIndex() throws Exception {
+        mockMvc.perform(get("/admin/v1/"))
+               .andExpect(status().isOk())
+               .andExpect(view().name("index"));
+    }
+
 }
