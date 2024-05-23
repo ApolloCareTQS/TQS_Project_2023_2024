@@ -4,7 +4,7 @@ pipeline {
         stage("Build"){
             steps{
                 echo 'Build'
-                ls
+                sh 'ls'
                 sh 'docker compose build'
             }
         }
