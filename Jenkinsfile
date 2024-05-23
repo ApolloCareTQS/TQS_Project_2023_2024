@@ -7,7 +7,7 @@ pipeline {
                 sh 'newgrp docker && docker compose build'
             }
         }
-        stage("Deploy"){
+        stage("Deploy to production"){
             steps{
                 echo 'Deploy'
                 sh 'newgrp docker && docker compose up -d'
