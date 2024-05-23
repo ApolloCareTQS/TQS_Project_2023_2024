@@ -46,52 +46,83 @@ import '@ionic/react/css/display.css';
 import './theme/variables.css';
 import Login from './pages/Login';
 import Register from './pages/Register';
+import React, {useState,createContext,useContext, useEffect} from "react";
+import axios from 'axios';
+import PrivateRoute from './components/PrivateRoute';
 
 setupIonicReact();
 
-const App: React.FC = () => (
-  <IonApp>
-    <IonReactRouter>
-      {/*<IonTabs>*/}
-        <IonRouterOutlet>
-          <Route exact path="/home">
-            <Home/>
-          </Route>
-          <Route exact path="/login">
-            <Login/>
-          </Route>
-          <Route exact path="/register">
-            <Register/>
-          </Route>
-          <Route exact path="/schedule">
+export interface User {
+  id: "",
+  username: "",
+  signedIn: false
+}
+
+export const AuthContext = createContext<any>(null);
+const backendURI = "http://localhost:8080/";
+
+const App: React.FC = () => { 
+  const [authState, setAuthState] = useState<User | null>(null);
+
+  useEffect(() => {
+    //console.log(authState);
+    const storedAuthState = localStorage.getItem('authState');
+    if (storedAuthState) {
+      console.log(storedAuthState);
+      //setAuthState(JSON.parse(storedAuthState));
+    }
+  }, []);
+
+  const login = (user: User) => {
+    //setAuthState(user);
+    localStorage.setItem('authState', JSON.stringify(user));
+  }
+
+  const logout = () => {
+    //setAuthState(null);
+    localStorage.removeItem('authState');
+  }
+
+  const checkAuth = () => {
+    const storedAuthState = localStorage.getItem('authState');
+    if (storedAuthState) {
+      return JSON.parse(storedAuthState);
+    }
+    return null;
+  }
+
+  return (
+    <AuthContext.Provider value={{ authState, login, logout, checkAuth }}>
+      <IonApp>
+        <IonReactRouter>
+          {/*<IonTabs>*/}
+          <IonRouterOutlet>
+            <Route exact path="/home">
+              <Home />
+            </Route>
+            <Route exact path="/login">
+              <Login />
+            </Route>
+            <Route exact path="/register">
+              <Register />
+            </Route>
+            {/*<Route exact path="/schedule">
             <Schedule />
           </Route>
           <Route path="/appointments">
             <Tab3 />
           </Route>
-          <Route exact path="/">
-            <Redirect to="/home" />
-          </Route>
-        </IonRouterOutlet>
-        {/*
-        <IonTabBar slot="bottom">
-          <IonTabButton tab="home" href="/home">
-            <IonIcon aria-hidden="true" icon={home} />
-            <IonLabel>Home</IonLabel>
-          </IonTabButton>
-          <IonTabButton tab="schedule" href="/schedule">
-            <IonIcon aria-hidden="true" icon={calendar} />
-            <IonLabel>Schedule</IonLabel>
-          </IonTabButton>
-          <IonTabButton tab="tab3" href="/tab3">
-            <IonIcon aria-hidden="true" icon={square} />
-            <IonLabel>Tab 3</IonLabel>
-          </IonTabButton>
-        </IonTabBar>
-      </IonTabs>
-      */}
-    </IonReactRouter>
-  </IonApp>
+          */}
+            <PrivateRoute exact path="/schedule" component={Schedule} />
+            <PrivateRoute exact path="/appointments" component={Tab3} />
+            <Route exact path="/">
+              <Redirect to="/home" />
+            </Route>
+          </IonRouterOutlet>
+        </IonReactRouter>
+      </IonApp>
+    </AuthContext.Provider>
 );
+}
 
 export default App;

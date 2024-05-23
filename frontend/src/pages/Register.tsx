@@ -1,6 +1,7 @@
 import ExploreContainer from '../components/ExploreContainer';
 import { IonButton, IonButtons, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonCol, IonContent, IonGrid, IonHeader, IonIcon, IonInput, IonItem, IonLabel, IonList, IonMenu, IonMenuButton, IonPage, IonRow, IonTitle, IonToolbar } from '@ionic/react';
 import styles from './Register.module.css';
+import { useContext, useState } from 'react';
 
 const Register: React.FC = () => {
     const role="PATIENT";
@@ -9,7 +10,7 @@ const Register: React.FC = () => {
     const [username,setUsername]=useState(false);
 
     const handleRegister = async() => {
-        const baseUrl="localhost:8080"; // when deploying we'll likely use docker compose so we'll have to rename this to the server container's name
+        const baseUrl="http://localhost:8080"; // when deploying we'll likely use docker compose so we'll have to rename this to the server container's name
         const body={
             role:role,
             email:email,
@@ -18,7 +19,7 @@ const Register: React.FC = () => {
         }
         console.debug(`registering with data ${body}`);
 
-        const response=await fetch(baseUrl+"auth/v1/register", { 
+        const response=await fetch(baseUrl+"/auth/v1/register", { 
             method:"POST",
             body: JSON.stringify(body),
             headers: {"Content-Type":"application/json"}
