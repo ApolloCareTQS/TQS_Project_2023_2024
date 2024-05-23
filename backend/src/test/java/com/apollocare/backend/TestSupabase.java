@@ -1,12 +1,6 @@
 package com.apollocare.backend;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.when;
-
-import java.io.IOException;
-import java.util.List;
 
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -19,7 +13,7 @@ import com.apollocare.backend.util.SupabaseManager;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @SpringBootTest
-public class TestSupabase {
+class TestSupabase {
     
     @Mock
     private ObjectMapper mapper;

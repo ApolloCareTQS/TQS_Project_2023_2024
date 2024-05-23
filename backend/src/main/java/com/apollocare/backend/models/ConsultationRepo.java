@@ -1,4 +1,5 @@
 package com.apollocare.backend.models;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -9,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
+import com.apollocare.backend.util.State;
 import com.apollocare.backend.util.SupabaseManager;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
@@ -52,7 +54,8 @@ public class ConsultationRepo extends Repository{
     
         String uri = "rest/v1/Consultation?id=eq." + consultation.getId();
     
-        logger.debug("id: {} -> update called", consultation.getId());
+        logger.debug("id: {}\n" + //
+                        " -> update called", consultation.getId());
         ResponseEntity<String> response = manager.patchRequest(uri, mapper.writeValueAsString(body));
     
         if (response.getStatusCode() != HttpStatus.OK) {
@@ -122,5 +125,13 @@ public class ConsultationRepo extends Repository{
     }
 
 
+    public List<Consultation> findAllByPatientIDAndState(String patientId, State state){
+        ResponseEntity<String> response=manager.getRequest("/rest/v1/Consultation?and=(patientId.eq."+patientId+",state.eq."+state.name()+")&select=*");
+        if(response.getStatusCode()==HttpStatus.OK){
+            return manager.parseConsultationList(response.getBody());
+        }else{
+            return new ArrayList<>();
+        }
+    }
     
 }
