@@ -138,6 +138,47 @@ class TestConsultationService {
         assertDoesNotThrow(() -> service.checkInConsultation(id));
     }
 
+    @Test
+    void testFindAllClinics() {
+        when(consultationRepo.findAllClinics()).thenReturn(List.of(new Clinic("Location1"), new Clinic("Location2")));
+        List<Clinic> result = service.findAllClinics();
+        assertEquals(2, result.size());
+    }
+
+    @Test
+    void testFindAllSpecialties() {
+        when(consultationRepo.findAllSpecialties()).thenReturn(List.of(new Specialty("Specialty1"), new Specialty("Specialty2")));
+        List<Specialty> result = service.findAllSpecialties();
+        assertEquals(2, result.size());
+    }
+
+    @Test
+    void testFindPatientsByName() {
+        String name = "John";
+        when(consultationRepo.findPatientByNameLike(any())).thenReturn(List.of(new Patient("1", "mail", "John Doe"), new Patient("2", "mail", "Johnny")));
+        List<Patient> result = service.findPatientsByName(name);
+        assertEquals(2, result.size());
+    }
+
+    @Test
+    void testFindConsultationsByPatientId() {
+        String id = "123";
+        when(consultationRepo.findConsultationsByPatientId(id)).thenReturn(List.of(new Consultation()));
+        List<Consultation> result = service.findConsultationsByPatientId(id);
+        assertEquals(1, result.size());
+    }
+
+    @Test
+    void testCheckOutConsultation() throws JsonProcessingException {
+        long id = 123L;
+        consultation.setState("CHECKED_IN"); 
+        when(consultationRepo.findById(id)).thenReturn(Optional.of(consultation));
+    
+        service.checkOutConsultation(id);
+    
+        assertEquals("CHECKED_OUT", consultation.getState());
+    }
+
     
 }
 

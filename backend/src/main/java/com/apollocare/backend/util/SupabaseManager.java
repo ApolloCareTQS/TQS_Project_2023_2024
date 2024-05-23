@@ -72,4 +72,36 @@ public class SupabaseManager {
         }
         return Collections.emptyList();
     }
+
+    public List<Patient> parsePatientList(String responseBody) {
+        if (StringUtils.hasText(responseBody)) {
+            try {
+                return mapper.readValue(responseBody, new TypeReference<List<Patient>>() {});
+            } catch (IOException e) {
+                logger.error("Failed to parse patient list", e);
+            }
+        }
+        return Collections.emptyList();
+    }
+
+    public List<Clinic> parseClinicList(String responseBody) {
+        if (StringUtils.hasText(responseBody)) {
+            try {
+                return mapper.readValue(responseBody, new TypeReference<List<Clinic>>() {});
+            } catch (IOException e) {
+                logger.error("Failed to parse clinic list", e);
+            }
+        }
+        return Collections.emptyList();
+    }
+    public List<Specialty> parseSpecialtyList(String responseBody) {
+        if (StringUtils.hasText(responseBody)) {
+            try {
+                return mapper.readValue(responseBody, new TypeReference<List<Specialty>>() {});
+            } catch (IOException e) {
+                logger.error("Failed to parse specialty list", e);
+            }
+        }
+        return Collections.emptyList();
+    }
 }

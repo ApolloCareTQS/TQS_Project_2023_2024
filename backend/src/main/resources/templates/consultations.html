@@ -35,9 +35,13 @@
                 <td th:text="${consultation.specialty}"></td>
                 <td th:text="${consultation.location}"></td>
                 <td>
-                    <form th:action="@{/admin/v1/checkin}" method="post">
+                    <form th:action="@{/admin/v1/checkin}" method="post" th:if="${consultation.state == 'SCHEDULED'}">
                         <input type="hidden" name="id" th:value="${consultation.id}" />
                         <button type="submit">Check-In</button>
+                    </form>
+                    <form th:action="@{/admin/v1/checkout}" method="post" th:if="${consultation.state == 'CHECKED_IN'}">
+                        <input type="hidden" name="id" th:value="${consultation.id}" />
+                        <button type="submit">Check-Out</button>
                     </form>
                 </td>
             </tr>

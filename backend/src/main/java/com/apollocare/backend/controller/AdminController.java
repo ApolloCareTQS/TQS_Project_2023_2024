@@ -17,29 +17,46 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.apollocare.backend.models.Consultation;
 import com.apollocare.backend.models.Doctor;
+import com.apollocare.backend.models.Patient;
 import com.apollocare.backend.service.ConsultationService;
 
 @Controller
 @RequestMapping("/admin/v1")
 public class AdminController {
 
+    private static final String CONSULTATIONS = "consultations";
     private final ConsultationService cService;
 
     public AdminController(ConsultationService cService) {
         this.cService = cService;
     }
 
+    @GetMapping("/")
+    public String index() {
+        return "index";
+    }
+
     @GetMapping("/all")
     public String getAllConsultations(Model model) {
         List<Consultation> consultations = cService.findAllConsultations();
-        model.addAttribute("consultations", consultations);
-        return "consultations";
+        model.addAttribute(CONSULTATIONS, consultations);
+        return CONSULTATIONS;
+    }
+
+    @GetMapping("/patient_consultations")
+    public String getPatientConsultations(@RequestParam("patientId") String id, Model model) {
+        String sanitizedId = id.replaceAll("[\n\r]", "_");
+        List<Consultation> consultations = cService.findConsultationsByPatientId(sanitizedId);
+        model.addAttribute(CONSULTATIONS, consultations);
+        return CONSULTATIONS;
     }
 
     @GetMapping("/form")
     public String showAddConsultationForm(Model model) {
         List<Doctor> doctors = cService.findAllDoctors();
         model.addAttribute("doctors", doctors);
+        model.addAttribute("clinics", cService.findAllClinics());
+        model.addAttribute("specialties", cService.findAllSpecialties());
         model.addAttribute("consultation", new Consultation());
         return "add";
     }
@@ -56,11 +73,25 @@ public class AdminController {
         return "redirect:/admin/v1/all";
     }
 
+    @PostMapping("/checkout")
+    public String checkOutConsultation(@RequestParam("id") Long id) {
+        cService.checkOutConsultation(id);
+        return "redirect:/admin/v1/all";
+    }
+
     @GetMapping("/consultations/{id}")
     public ResponseEntity<Consultation> getConsultationById(@PathVariable Long id) {
         Optional<Consultation> optionalConsultation = cService.getConsultationById(id);
         return optionalConsultation.map(ResponseEntity::ok)
                                    .orElse(ResponseEntity.notFound().build());
+    }
+
+    @GetMapping("/search_patients")
+    public String searchPatients(@RequestParam String name, Model model) {
+        String sanitizedName = name.replaceAll("[\n\r]", "_");
+        List<Patient> patients = cService.findPatientsByName(sanitizedName);
+        model.addAttribute("patients", patients);
+        return "patients";
     }
 
     @DeleteMapping("/delete/{id}")
