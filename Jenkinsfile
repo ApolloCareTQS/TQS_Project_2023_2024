@@ -4,13 +4,13 @@ pipeline {
         stage("Build"){
             steps{
                 echo 'Build'
-                sh 'docker compose build'
+                sh 'newgrp docker && docker compose build'
             }
         }
         stage("Deploy"){
             steps{
                 echo 'Deploy'
-                sh 'docker compose up -d'
+                sh 'newgrp docker && docker compose up -d'
             }
         }
     }
