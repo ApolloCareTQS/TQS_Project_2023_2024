@@ -4,7 +4,7 @@ pipeline {
         stage("Pull"){
             steps{
                 echo 'Pull'
-                sh 'cd /home/brunopascoa03/project/TQS_Project_2023_2024/ && git checkout main && git pull'
+                sh 'cd /home/brunopascoa03/project/TQS_Project_2023_2024/ && git config --global --add safe.directory /home/brunopascoa03/project/TQS_Project_2023_2024 && git checkout main && git pull'
             }
         }
         stage("Build"){
