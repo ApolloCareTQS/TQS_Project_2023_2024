@@ -2,59 +2,41 @@ import { IonButton, IonCard, IonCardContent, IonCol, IonContent, IonGrid, IonHea
 import ExploreContainer from '../components/ExploreContainer';
 import './Tab3.css';
 import { create } from 'ionicons/icons';
+import axios from 'axios';
+import { useEffect, useState } from 'react';
+
+axios.defaults.baseURL = "http://localhost:8080";
 
 const Tab3: React.FC = () => {
-  const agendaData = [
-    {
-      speciality: 'Cardiology',
-      date: '2024-05-05',
-      hour: '10:00 AM',
-      doctor: 'Dr. Smith',
-      hospital: 'General Hospital'
-    },
-    {
-      speciality: 'Dermatology',
-      date: '2024-05-06',
-      hour: '02:30 PM',
-      doctor: 'Dr. Johnson',
-      hospital: 'City Clinic'
-    },
-    {
-      speciality: 'Orthopedics',
-      date: '2024-05-07',
-      hour: '11:15 AM',
-      doctor: 'Dr. Williams',
-      hospital: 'OrthoCare Hospital'
-    },
-    {
-      speciality: 'Ophthalmology',
-      date: '2024-05-08',
-      hour: '09:45 AM',
-      doctor: 'Dr. Anderson',
-      hospital: 'Eye Institute'
-    },
-    {
-      speciality: 'Pediatrics',
-      date: '2024-05-09',
-      hour: '03:00 PM',
-      doctor: 'Dr. Martinez',
-      hospital: 'Children\'s Hospital'
-    },
-    {
-      speciality: 'Neurology',
-      date: '2024-05-10',
-      hour: '01:00 PM',
-      doctor: 'Dr. Lee',
-      hospital: 'Neuro Clinic'
-    },
-    {
-      speciality: 'Gastroenterology',
-      date: '2024-05-11',
-      hour: '04:45 PM',
-      doctor: 'Dr. Brown',
-      hospital: 'Gastro Health Center'
-    }
-  ];
+  const [historyData, setHistoryData] = useState([]);
+  const [scheduledData, setScheduledData] = useState([]);
+
+  const getHistory = () => {
+    axios.get('/api/v1/user/history', {withCredentials: true})
+      .then(function (response) {
+        console.log(response.data);
+        setHistoryData(response.data);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  }
+
+  const getSchedule = () => {
+    axios.get('/api/v1/user/scheduled', {withCredentials: true})
+      .then(function (response) {
+        console.log(response.data);
+        setScheduledData(response.data);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  }
+
+  useEffect(() => {
+    getHistory();
+    getSchedule();
+  }, []);
 
   return (
     <IonPage>
@@ -66,6 +48,7 @@ const Tab3: React.FC = () => {
       <IonContent>
         <IonCard>
           <IonCardContent>
+            <IonTitle>Upcoming consultations</IonTitle>
             <IonSearchbar color='primary' placeholder="Search for records..."></IonSearchbar>
             <IonGrid>
               <IonRow>
@@ -106,22 +89,90 @@ const Tab3: React.FC = () => {
                 </IonCol>
                 <IonCol></IonCol>
               </IonRow>
-              {agendaData.map((item, index) => (
+              {scheduledData.map((item, index) => (
                 <IonRow key={index}>
                   <IonCol className='appt_col'>
-                    <IonLabel>{item.speciality}</IonLabel>
+                    <IonLabel>{item.specialty}</IonLabel>
                   </IonCol>
                   <IonCol className='appt_col'>
-                    <IonLabel>{item.date}</IonLabel>
+                    <IonLabel>{new Date(item.scheduledDate).toLocaleDateString()}</IonLabel>
                   </IonCol>
                   <IonCol className='appt_col'>
-                    <IonLabel>{item.hour}</IonLabel>
+                    <IonLabel>{new Date(item.scheduledDate).toLocaleTimeString()}</IonLabel>
                   </IonCol>
                   <IonCol className='appt_col'>
-                    <IonLabel>{item.doctor}</IonLabel>
+                    <IonLabel>{item.doctorId}</IonLabel>
                   </IonCol>
                   <IonCol className='appt_col'>
-                    <IonLabel>{item.hospital}</IonLabel>
+                    <IonLabel>{item.location}</IonLabel>
+                  </IonCol>
+                  <IonCol>
+                    <IonButton className='appt_button' fill='outline'><IonIcon icon={create}></IonIcon></IonButton>
+                  </IonCol>
+                </IonRow>
+              ))}
+            </IonGrid>
+          </IonCardContent>
+        </IonCard>
+        <IonCard>
+          <IonCardContent>
+            <IonTitle>Consulations history</IonTitle>
+            <IonSearchbar color='primary' placeholder="Search for records..."></IonSearchbar>
+            <IonGrid>
+              <IonRow>
+                <IonCol>
+                  <IonLabel>
+                    <h1>
+                      Speciality
+                    </h1>
+                  </IonLabel>
+                </IonCol>
+                <IonCol>
+                  <IonLabel>
+                    <h1>
+                      Date
+                    </h1>
+                  </IonLabel>
+                </IonCol>
+                <IonCol>
+                  <IonLabel>
+                    <h1>
+                      Hour
+                    </h1>
+                  </IonLabel>
+                </IonCol>
+                <IonCol>
+                  <IonLabel>
+                    <h1>
+                      Doctor
+                    </h1>
+                  </IonLabel>
+                </IonCol>
+                <IonCol>
+                  <IonLabel>
+                    <h1>
+                      Hospital
+                    </h1>
+                  </IonLabel>
+                </IonCol>
+                <IonCol></IonCol>
+              </IonRow>
+              {historyData.map((item, index) => (
+                <IonRow key={index}>
+                  <IonCol className='appt_col'>
+                    <IonLabel>{item.specialty}</IonLabel>
+                  </IonCol>
+                  <IonCol className='appt_col'>
+                    <IonLabel>{new Date(item.scheduledDate).toLocaleDateString()}</IonLabel>
+                  </IonCol>
+                  <IonCol className='appt_col'>
+                    <IonLabel>{new Date(item.scheduledDate).toLocaleTimeString()}</IonLabel>
+                  </IonCol>
+                  <IonCol className='appt_col'>
+                    <IonLabel>{item.doctorId}</IonLabel>
+                  </IonCol>
+                  <IonCol className='appt_col'>
+                    <IonLabel>{item.location}</IonLabel>
                   </IonCol>
                   <IonCol>
                     <IonButton className='appt_button' fill='outline'><IonIcon icon={create}></IonIcon></IonButton>

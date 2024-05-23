@@ -1,14 +1,20 @@
 import ExploreContainer from '../components/ExploreContainer';
 import { IonButton, IonButtons, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonCol, IonContent, IonGrid, IonHeader, IonIcon, IonInput, IonItem, IonLabel, IonList, IonMenu, IonMenuButton, IonPage, IonRow, IonTitle, IonToolbar } from '@ionic/react';
 import styles from './Login.module.css';
+import { useContext, useState } from 'react';
+import { AuthContext, User } from '../App';
+import axios from 'axios';
+
+axios.defaults.baseURL = "http://localhost:8080"
 
 const Login: React.FC = () => {
     const role="PATIENT";
     const [email,setEmail]=useState(false);
     const [password,setPassword]=useState(false);
 
-    const handleRegister = async() => {
-        const baseUrl="localhost:8080"; // when deploying we'll likely use docker compose so we'll have to rename this to the server container's name
+    const { login } = useContext(AuthContext);
+
+    const handleLogin = async() => {
         const body={
             role:role,
             email:email,
@@ -16,22 +22,16 @@ const Login: React.FC = () => {
         }
         console.debug(`logging in with data ${body}`);
 
-        const response=await fetch(baseUrl+"auth/v1/login", { 
-            method:"POST",
-            body: JSON.stringify(body),
-            headers: {"Content-Type":"application/json"}
+        const response = await axios.post('/auth/v1/login', body, {withCredentials: true}).then(function (response) {
+            const user: User = {
+                id: response.data.id,
+                username: response.data.name,
+                signedIn: true,
+            };
+            login(user);
+            window.location.href = '/';
+            console.log(response);
         });
-
-        switch(response.status){
-            case 200:
-                console.debug(`login successful, body: ${await response.json()}`);
-                window.location.href="/";
-                break;
-            //may add specific responses in the future
-            default:
-                console.warn(`login failed! error code: ${response.status}, error text: ${await response.json()}`);
-                alert("An unexpected error occurred");
-        }
     }
     
     return (
@@ -56,7 +56,7 @@ const Login: React.FC = () => {
                                     <IonInput type="password" labelPlacement="stacked" label="Password" onIonInput={(e:any)=> setPassword(e.target.value)}></IonInput>
                                 </IonItem>
                             </IonList>
-                            <IonButton>Login</IonButton>
+                            <IonButton onClick={handleLogin}>Login</IonButton>
                         </IonCardContent>
                     </IonCard>
                 </div>
