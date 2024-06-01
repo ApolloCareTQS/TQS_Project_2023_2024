@@ -86,6 +86,16 @@
     		<artifactId>spring-boot-starter-thymeleaf</artifactId>
     		<version>3.2.5</version>
 		</dependency>
+		<dependency>
+			<groupId>org.seleniumhq.selenium</groupId>
+			<artifactId>selenium-java</artifactId>
+			<version>4.19.1</version>
+		</dependency>
+		<dependency>
+    		<groupId>org.seleniumhq.selenium</groupId>
+    		<artifactId>htmlunit-driver</artifactId>
+    		<version>4.13.0</version>
+		</dependency>
 	</dependencies>
 
 	<build>
