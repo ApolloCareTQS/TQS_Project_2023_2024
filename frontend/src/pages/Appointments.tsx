@@ -1,13 +1,13 @@
 import { IonButton, IonCard, IonCardContent, IonCol, IonContent, IonGrid, IonHeader, IonIcon, IonItem, IonItemGroup, IonLabel, IonLifeCycleContext, IonList, IonPage, IonRow, IonSearchbar, IonTitle, IonToolbar } from '@ionic/react';
 import ExploreContainer from '../components/ExploreContainer';
-import './Tab3.css';
+import './Appointments.css';
 import { create } from 'ionicons/icons';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
+import { backendURI } from '../App';
 
-axios.defaults.baseURL = "http://localhost:8080";
 
-const Tab3: React.FC = () => {
+const Appointments: React.FC = () => {
   const [historyData, setHistoryData] = useState([]);
   const [scheduledData, setScheduledData] = useState([]);
 
@@ -187,4 +187,4 @@ const Tab3: React.FC = () => {
   );
 };
 
-export default Tab3;
+export default Appointments;

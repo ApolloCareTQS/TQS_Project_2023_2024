@@ -2,10 +2,10 @@ import ExploreContainer from '../components/ExploreContainer';
 import { IonButton, IonButtons, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonCol, IonContent, IonGrid, IonHeader, IonIcon, IonInput, IonItem, IonLabel, IonList, IonMenu, IonMenuButton, IonPage, IonRow, IonTitle, IonToolbar } from '@ionic/react';
 import styles from './Login.module.css';
 import { useContext, useState } from 'react';
-import { AuthContext, User } from '../App';
+import { AuthContext, User, backendURI } from '../App';
 import axios from 'axios';
 
-axios.defaults.baseURL = "http://localhost:8080"
+//axios.defaults.baseURL = backendURI;
 
 const Login: React.FC = () => {
     const role="PATIENT";

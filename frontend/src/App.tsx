@@ -13,7 +13,7 @@ import { IonReactRouter } from '@ionic/react-router';
 import { ellipse, square, home, calendar } from 'ionicons/icons';
 import Home from './pages/Home';
 import Schedule from './pages/Schedule';
-import Tab3 from './pages/Tab3';
+import Tab3 from './pages/Appointments';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -49,6 +49,7 @@ import Register from './pages/Register';
 import React, {useState,createContext,useContext, useEffect} from "react";
 import axios from 'axios';
 import PrivateRoute from './components/PrivateRoute';
+import Appointments from './pages/Appointments';
 
 setupIonicReact();
 
@@ -59,7 +60,8 @@ export interface User {
 }
 
 export const AuthContext = createContext<any>(null);
-const backendURI = "http://localhost:8080/";
+export const backendURI = "http://localhost:9090";
+axios.defaults.baseURL = backendURI; 
 
 const App: React.FC = () => { 
   const [authState, setAuthState] = useState<User | null>(null);
@@ -114,7 +116,7 @@ const App: React.FC = () => {
           </Route>
           */}
             <PrivateRoute exact path="/schedule" component={Schedule} />
-            <PrivateRoute exact path="/appointments" component={Tab3} />
+            <PrivateRoute exact path="/appointments" component={Appointments} />
             <Route exact path="/">
               <Redirect to="/home" />
             </Route>
