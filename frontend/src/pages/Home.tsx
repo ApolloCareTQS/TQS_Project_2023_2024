@@ -3,7 +3,7 @@ import ExploreContainer from '../components/ExploreContainer';
 import styles from './Home.module.css';
 import ScheduleFormContainer from '../components/ScheduleFormContainer';
 import AgendaContainer from '../components/AgendaContainer';
-import { calendar } from 'ionicons/icons';
+import { calendar, logOut } from 'ionicons/icons';
 
 // Import Swiper React components
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -11,14 +11,14 @@ import { register } from 'swiper/element/bundle';
 
 // Import Swiper styles
 import 'swiper/css';
+import { useContext } from 'react';
+import { AuthContext } from '../App';
 
 register();
 
 const Home: React.FC = () => {
 
-  function goToSchedule() {
-
-  }
+  const context = useContext(AuthContext);
 
   return (
     <>
@@ -29,12 +29,31 @@ const Home: React.FC = () => {
           </IonToolbar>
         </IonHeader>
         <IonContent>
-
+          <IonList lines='full'>
+            {context.checkAuth() ? (
+              <>
+                <IonItem button href='/schedule'>
+                  <IonLabel>Schedule</IonLabel>
+                </IonItem>
+                <IonItem button href='/appointments'>
+                  <IonLabel>Appointments</IonLabel>
+                </IonItem>
+                <IonItem button onClick={context.logout}>
+                  <IonLabel>Logout</IonLabel>
+                </IonItem>
+              </>
+            ) : (
+                <>
+                  <IonItem button href='/login'>
+                    <IonLabel>Login</IonLabel>
+                  </IonItem>
+                  <IonItem button href='/register'>
+                    <IonLabel>Register</IonLabel>
+                  </IonItem>
+                </>
+            )}
+          </IonList>
         </IonContent>
-        <IonFooter>
-            <IonButton href='/login' color='success' fill='outline'>Login&nbsp;</IonButton>
-            <IonButton href='/register' fill='outline'>Register&nbsp;</IonButton>
-        </IonFooter>
       </IonMenu>
       <IonPage style={styles} id='main-content'>
         <IonHeader>

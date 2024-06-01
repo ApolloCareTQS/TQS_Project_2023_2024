@@ -83,7 +83,7 @@ const Appointments: React.FC = () => {
             <IonGrid>
               <IonRow>
                 <IonCol className='appt_col'>
-                  <IonSearchbar mode="ios" placeholder="Search for records..." value={searchQueryScheduled} onIonChange={handleSearchChangeScheduled}></IonSearchbar>
+                  <IonSearchbar mode="ios" placeholder="Search for records..." value={searchQueryScheduled} onIonInput={handleSearchChangeScheduled}></IonSearchbar>
                 </IonCol>
                 <IonCol size='auto' className='appt_col'>
                     <IonButton className="appt_button" onClick={() => setShowFilterScheduled(true)}>
@@ -167,7 +167,7 @@ const Appointments: React.FC = () => {
             <IonGrid>
               <IonRow>
                 <IonCol className='appt_col'>
-                  <IonSearchbar mode="ios" placeholder="Search for records..." value={searchQueryHistory} onIonChange={handleSearchChangeHistory}></IonSearchbar>
+                  <IonSearchbar mode="ios" placeholder="Search for records..." value={searchQueryHistory} onIonInput={handleSearchChangeHistory}></IonSearchbar>
                 </IonCol>
                 <IonCol size='auto' className='appt_col'>
                   <IonButton className='appt_button' onClick={() => setShowFilterHistory(true)}>

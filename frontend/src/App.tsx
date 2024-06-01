@@ -83,6 +83,7 @@ const App: React.FC = () => {
   const logout = () => {
     //setAuthState(null);
     localStorage.removeItem('authState');
+    window.location.reload();
   }
 
   const checkAuth = () => {
@@ -93,6 +94,8 @@ const App: React.FC = () => {
     return null;
   }
 
+
+
   return (
     <AuthContext.Provider value={{ authState, login, logout, checkAuth }}>
       <IonApp>
@@ -102,12 +105,26 @@ const App: React.FC = () => {
             <Route exact path="/home">
               <Home />
             </Route>
-            <Route exact path="/login">
-              <Login />
-            </Route>
-            <Route exact path="/register">
-              <Register />
-            </Route>
+            {checkAuth() ? (
+              <>
+              <Route exact path = "/login">
+                <Home />
+              </Route>
+              <Route exact path="/register">
+                <Home />
+              </Route>
+              </>
+            ) : (
+              <>
+              <Route exact path = "/login">
+                <Login />
+              </Route>
+              <Route exact path="/register">
+                <Register />
+              </Route>
+              </>
+              )
+            }
             {/*<Route exact path="/schedule">
             <Schedule />
           </Route>
