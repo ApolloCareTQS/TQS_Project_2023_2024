@@ -3,70 +3,77 @@
 <head>
     <meta charset="UTF-8">
     <title>Add Consultation</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-    <h2>Add Consultation</h2>
-    
-    <!-- Listar todos os médicos antes do formulário -->
-    <h3>Doctors List</h3>
-    <ul>
-        <li th:each="doctor : ${doctors}">
-            <span th:text="${doctor.name} + ' (' + ${doctor.specialty} + ', ' + ${doctor.clinic} + ')'"></span>
-        </li>
-    </ul>
-    
-    <form th:action="@{/admin/v1/add}" th:object="${consultation}" method="post">
-
-        <label for="scheduledDate">Scheduled Date:</label>
-        <input type="datetime-local" id="scheduledDateInput" placeholder="Scheduled Date"/>
-        <input type="hidden" id="scheduledDate" th:field="*{scheduledDate}" value="" />
-
-        <!-- <label for="checkInDate">Check In Date:</label>
-        <input type="text" id="checkInDate" th:field="*{checkInDate}" placeholder="Check In Date"/><br>
+    <div class="container my-5">
+        <h2 class="mb-4">Add Consultation</h2>
+        <nav>
+            <ul class="nav nav-pills mb-3">
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/admin/v1/}">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/admin/v1/all}">All Consultations</a>
+                </li>
+            </ul>
+        </nav>
         
-        <label for="receptionDate">Reception Date:</label>
-        <input type="text" id="receptionDate" th:field="*{receptionDate}" placeholder="Reception Date"/><br>
-        
-        <label for="duration">Duration:</label>
-        <input type="number" id="duration" th:field="*{duration}" placeholder="Duration"/><br>
-         -->
-        <label for="patientId">Patient ID:</label>
-        <input type="text" id="patientId" th:field="*{patientId}" placeholder="Patient ID"/><br>
-        
-        <label for="doctorId">Doctor:</label>
-        <select id="doctorId" th:field="*{doctorId}">
-            <option th:each="doctor : ${doctors}" 
-                    th:value="${doctor.id}" 
-                    th:text="${doctor.name} + ' (' + ${doctor.specialty} + ', ' + ${doctor.clinic} + ')'"></option>
-        </select><br>
-<!--         
-        <label for="state">State:</label>
-        <input type="text" id="state" th:field="*{state}" placeholder="State"/><br>
-         -->
-        <label for="specialty">Specialty:</label>
-        <select id="specialty" th:field="*{specialty}">
-            <option th:each="specialty : ${specialties}" 
-                    th:value="${specialty.name}"
-                    th:text="${specialty.name}"></option>
-        </select>
-        
-        <label for="location">Clinic:</label>
-        <select id="location" th:field="*{location}">
-            <option th:each="clinic : ${clinics}" 
-                    th:value="${clinic.location}" 
-                    th:text="${clinic.location}"></option>
-        </select>
-        <!-- <input type="text" id="locationId" th:field="*{locationId}" placeholder="Location"/><br> -->
+        <form th:action="@{/admin/v1/add}" th:object="${consultation}" method="post" class="needs-validation" novalidate>
+            <div class="form-group">
+                <label for="scheduledDate">Scheduled Date:</label>
+                <input type="datetime-local" id="scheduledDateInput" class="form-control" placeholder="Scheduled Date" required/>
+                <input type="hidden" id="scheduledDate" th:field="*{scheduledDate}" value="" />
+            </div>
 
-        <button type="submit">Submit</button>
-    </form>
+            <div class="form-group">
+                <label for="patientId">Patient ID:</label>
+                <input type="text" id="patientId" th:field="*{patientId}" class="form-control" placeholder="Patient ID" required/>
+            </div>
+            
+            <div class="form-group">
+                <label for="doctorId">Doctor:</label>
+                <select id="doctorId" th:field="*{doctorId}" class="form-control" required>
+                    <option th:each="doctor : ${doctors}" 
+                            th:value="${doctor.id}" 
+                            th:text="${doctor.name} + ' (' + ${doctor.specialty} + ', ' + ${doctor.clinic} + ')'"></option>
+                </select>
+            </div>
 
-    <script th:inline="javascript">
-        var scheduledDateInput = document.getElementById('scheduledDateInput');
-        scheduledDateInput.addEventListener('change', function() {
-            var selectedDateTime = new Date(this.value).getTime();
-            document.getElementById('scheduledDate').value = selectedDateTime;
-        });
-    </script>
+            <div class="form-group">
+                <label for="specialty">Specialty:</label>
+                <select id="specialty" th:field="*{specialty}" class="form-control" required>
+                    <option th:each="specialty : ${specialties}" 
+                            th:value="${specialty.name}"
+                            th:text="${specialty.name}"></option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="location">Clinic:</label>
+                <select id="location" th:field="*{location}" class="form-control" required>
+                    <option th:each="clinic : ${clinics}" 
+                            th:value="${clinic.location}" 
+                            th:text="${clinic.location}"></option>
+                </select>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+
+        <script th:inline="javascript">
+            var scheduledDateInput = document.getElementById('scheduledDateInput');
+            scheduledDateInput.addEventListener('change', function() {
+                var selectedDateTime = new Date(this.value).getTime();
+                document.getElementById('scheduledDate').value = selectedDateTime;
+            });
+        </script>
+    </div>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>

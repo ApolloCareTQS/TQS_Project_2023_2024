@@ -3,44 +3,61 @@
 <head>
     <meta charset="UTF-8">
     <title>Patients</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-    <h1>Patients</h1>
-    <nav>
-        <ul>
-            <li><a th:href="@{/admin/v1/}">Home</a></li>
-            <li><a th:href="@{/admin/v1/form}">Form</a></li>
-            <li><a th:href="@{/admin/v1/all}">All Consultations</a></li>
-        </ul>
-    </nav>
-    
-    <!-- Formulário de busca -->
-    <form th:action="@{/admin/v1/search_patients}" method="get">
-        <label for="patient-search">Search by Patient Name:</label>
-        <input type="text" id="patient-search" name="name" placeholder="Enter Patient Name">
-        <button type="submit">Search</button>
-    </form>
+    <div class="container">
+        <h1 class="my-4">Patients</h1>
+        <nav>
+            <ul class="nav nav-pills mb-3">
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/admin/v1/}">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/admin/v1/form}">Form</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/admin/v1/all}">All Consultations</a>
+                </li>
+            </ul>
+        </nav>
+        
+        <!-- Formulário de busca -->
+        <form th:action="@{/admin/v1/search_patients}" method="get" class="form-inline mb-4">
+            <div class="form-group mx-sm-3 mb-2">
+                <label for="patient-search" class="sr-only">Search by Patient Name:</label>
+                <input type="text" id="patient-search" name="name" class="form-control" placeholder="Enter Patient Name">
+            </div>
+            <button type="submit" class="btn btn-primary mb-2">Search</button>
+        </form>
 
-    <!-- Tabela de resultados da busca -->
-    <table>
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr th:each="patient : ${patients}">
-                <td th:text="${patient.id}"></td>
-                <td th:text="${patient.name}"></td>
-                <td th:text="${patient.email}"></td>
-                <td>
-                    <a th:href="@{/admin/v1/patient_consultations(patientId=${patient.id})}">View Consultations</a>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+        <!-- Tabela de resultados da busca -->
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="patient : ${patients}">
+                    <td th:text="${patient.id}"></td>
+                    <td th:text="${patient.name}"></td>
+                    <td th:text="${patient.email}"></td>
+                    <td>
+                        <a class="btn btn-info btn-sm" th:href="@{/admin/v1/patient_consultations(patientId=${patient.id})}">View Consultations</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>

@@ -3,60 +3,89 @@
 <head>
     <meta charset="UTF-8">
     <title>Consultations</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .actions-column {
+            white-space: nowrap; /* Evitar quebra de linha */
+        }
+    </style>
 </head>
 <body>
-    <h1>Consultations</h1>
-    <table>
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Scheduled Date</th>
-                <th>Check-In Date</th>
-                <th>Reception Date</th>
-                <th>Duration</th>
-                <th>Patient ID</th>
-                <th>Doctor ID</th>
-                <th>State</th>
-                <th>Specialty</th>
-                <th>Location</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr th:each="consultation : ${consultations}">
-                <td th:text="${consultation.id}"></td>
-                <td class="scheduled-date" th:text="${consultation.scheduledDate}"></td>
-                <td class="scheduled-date" th:text="${consultation.checkInDate}"></td>
-                <td th:text="${consultation.receptionDate}"></td>
-                <td th:text="${consultation.duration}"></td>
-                <td th:text="${consultation.patientId}"></td>
-                <td th:text="${consultation.doctorId}"></td>
-                <td th:text="${consultation.state}"></td>
-                <td th:text="${consultation.specialty}"></td>
-                <td th:text="${consultation.location}"></td>
-                <td>
-                    <form th:action="@{/admin/v1/checkin}" method="post" th:if="${consultation.state == 'SCHEDULED'}">
-                        <input type="hidden" name="id" th:value="${consultation.id}" />
-                        <button type="submit">Check-In</button>
-                    </form>
-                    <form th:action="@{/admin/v1/checkout}" method="post" th:if="${consultation.state == 'CHECKED_IN'}">
-                        <input type="hidden" name="id" th:value="${consultation.id}" />
-                        <button type="submit">Check-Out</button>
-                    </form>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+    <div class="container">
+        <h1 class="my-4">Consultations</h1>
+        <nav>
+            <ul class="nav nav-pills mb-3">
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/admin/v1/}">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/admin/v1/form}">Form</a>
+                </li>
+            </ul>
+        </nav>
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>ID</th>
+                        <th>Scheduled Date</th>
+                        <th>Check-In Date</th>
+                        <th>Reception Date</th>
+                        <th>Duration</th>
+                        <th>Patient ID</th>
+                        <th>Doctor ID</th>
+                        <th>State</th>
+                        <th>Specialty</th>
+                        <th>Location</th>
+                        <th class="actions-column">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="consultation : ${consultations}">
+                        <td th:text="${consultation.id}"></td>
+                        <td class="scheduled-date" th:text="${consultation.scheduledDate}"></td>
+                        <td class="scheduled-date" th:text="${consultation.checkInDate}"></td>
+                        <td th:text="${consultation.receptionDate}"></td>
+                        <td th:text="${consultation.duration}"></td>
+                        <td th:text="${consultation.patientId}"></td>
+                        <td th:text="${consultation.doctorId}"></td>
+                        <td th:text="${consultation.state}"></td>
+                        <td th:text="${consultation.specialty}"></td>
+                        <td th:text="${consultation.location}"></td>
+                        <td class="actions-column">
+                            <div class="btn-group">
+                                <form th:action="@{/admin/v1/checkin}" method="post" th:if="${consultation.state == 'SCHEDULED'}">
+                                    <input type="hidden" name="id" th:value="${consultation.id}" />
+                                    <button type="submit" class="btn btn-success btn-sm">Check-In</button>
+                                </form>
+                                <form th:action="@{/admin/v1/checkout}" method="post" th:if="${consultation.state == 'CHECKED_IN'}">
+                                    <input type="hidden" name="id" th:value="${consultation.id}" />
+                                    <button type="submit" class="btn btn-warning btn-sm">Check-Out</button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
     <script>
         var dateElements = document.querySelectorAll('.scheduled-date');
 
         dateElements.forEach(function(element) {
-            var timestamp = parseInt(element.textContent); 
+            var timestamp = parseInt(element.textContent);
             var date = new Date(timestamp);
-            var formattedDate = date.toLocaleString('pt-PT', { timeZone: 'UTC' }); 
+            var formattedDate = date.toLocaleString('pt-PT', { timeZone: 'UTC' });
 
             element.textContent = formattedDate;
         });
     </script>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
