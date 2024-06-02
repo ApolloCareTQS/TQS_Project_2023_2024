@@ -29,23 +29,17 @@ jobs:
           working-directory: frontend/
 
       - name: Install frontend dependencies
-        run: npm install
-        with:
-          working-directory: frontend/
+        run: cd frontend && npm install
 
       - name: Build frontend
-        run: npm run build
-        with:
-          working-directory: frontend/
+        run: cd frontend && npm run build
 
       - name: Start backend
         run: |
           docker run -d --name my-backend -p 8080:8080 my-backend-image
 
       - name: Run frontend tests
-        run: npm test
-        with:
-          working-directory: frontend/
+        run: cd frontend && npm test
 
       - name: Stop backend
         run: |
