@@ -10,7 +10,8 @@
     "preview": "vite preview",
     "test.e2e": "cypress run",
     "test.unit": "vitest",
-    "lint": "eslint"
+    "lint": "eslint",
+    "test": "mocha"
   },
   "dependencies": {
     "@capacitor/app": "6.0.0",
@@ -23,11 +24,16 @@
     "@types/react-router": "^5.1.20",
     "@types/react-router-dom": "^5.3.3",
     "axios": "^1.7.2",
+    "chai": "^5.1.1",
+    "chromedriver": "^125.0.3",
     "ionicons": "^7.0.0",
+    "mocha": "^10.4.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router": "^5.3.4",
     "react-router-dom": "^5.3.4",
+    "selenium-webdriver": "^4.21.0",
+    "socket.io": "^4.7.5",
     "swiper": "^11.1.1"
   },
   "devDependencies": {
@@ -40,7 +46,7 @@
     "@types/react-dom": "^18.0.10",
     "@vitejs/plugin-legacy": "^5.0.0",
     "@vitejs/plugin-react": "^4.0.1",
-    "cypress": "^13.5.0",
+    "cypress": "^13.10.0",
     "eslint": "^8.35.0",
     "eslint-plugin-react": "^7.32.2",
     "jsdom": "^22.1.0",
