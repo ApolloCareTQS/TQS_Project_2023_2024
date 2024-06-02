@@ -6,10 +6,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+//import org.springframework.web.bind.annotation.RequestBody;
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.apollocare.backend.models.Consultation;
 import com.apollocare.backend.models.User;
 import com.apollocare.backend.service.AuthService;
 import com.apollocare.backend.util.LogInRequest;
@@ -17,6 +19,12 @@ import com.apollocare.backend.util.Role;
 import com.apollocare.backend.util.SignUpRequest;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -31,6 +39,11 @@ public class AuthController {
     }
 
     //in order to get the tokens, use this:
+    @Operation(summary = "Logout from service")
+    @ApiResponses( value = {
+        @ApiResponse(responseCode = "200", description = "Logged out successfully",
+        content = @Content),
+    })
     @PostMapping("/logout")
     public ResponseEntity<String> logout(@CookieValue(name="token",required=false) String token, @CookieValue(name="role",required = false) String role, HttpServletResponse response){
         if(token!=null || role!=null){
@@ -46,9 +59,26 @@ public class AuthController {
         return new ResponseEntity<>("Logged out successfully",HttpStatus.OK);
     }
 
+    @Operation(summary = "Register new user")
+    @ApiResponses( value = {
+        @ApiResponse(responseCode = "200", description = "Registered successfully",
+        content = { @Content(mediaType = "application/json", schema = @Schema(implementation = User.class))}),
+        @ApiResponse(responseCode = "400", description = "Invalid user role",
+        content = @Content),
+        @ApiResponse(responseCode = "500", description = "Unmarshaling error",
+        content = @Content),
+    })
     //TODO: find a way to prevent unauthorized users from signing up as doctor/staff (if implementing role-based access restrictions)
     @PostMapping("/register")
-    public ResponseEntity<User> signup(@RequestBody SignUpRequest requestBody, HttpServletResponse response){
+    public ResponseEntity<User> signup(@RequestBody(content = @Content(
+        examples = { @ExampleObject(name="Register form sample", summary = "register form sample",
+        value = "{\"role\": PATIENT,"
+        + "\"username\": \"foobar\","
+        + "\"email\": \"example@gmail.com\","
+        + "\"password\": \"password\""
+        + "}"
+        )}
+    ))SignUpRequest requestBody, HttpServletResponse response){
         String username=requestBody.username();
         String email=requestBody.email();
         String password=requestBody.password();
@@ -76,8 +106,25 @@ public class AuthController {
         return user;
     }
 
+    @Operation(summary = "User login")
+    @ApiResponses( value = {
+        @ApiResponse(responseCode = "200", description = "Logged in successfully",
+        content = { @Content(mediaType = "application/json", schema = @Schema(implementation = User.class))}),
+        @ApiResponse(responseCode = "400", description = "Invalid user role",
+        content = @Content),
+        @ApiResponse(responseCode = "500", description = "Unmarshaling error",
+        content = @Content),
+    })
     @PostMapping("/login")
-    public ResponseEntity<User> login(@RequestBody LogInRequest requestBody, HttpServletResponse response){
+    public ResponseEntity<User> login(@RequestBody(content = @Content(
+        examples = { @ExampleObject(name="Login form sample", summary = "login form sample",
+        value = "{\"role\": PATIENT,"
+        + "\"username\": \"foobar\","
+        + "\"email\": \"example@gmail.com\","
+        + "\"password\": \"password\""
+        + "}"
+        )}
+    )) LogInRequest requestBody, HttpServletResponse response){
         String email=requestBody.email();
         String password=requestBody.password();
         Role role;

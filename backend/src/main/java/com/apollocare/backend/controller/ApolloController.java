@@ -19,6 +19,12 @@ import org.springframework.web.bind.annotation.RestController;
 import com.apollocare.backend.models.Consultation;
 import com.apollocare.backend.service.ConsultationService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+
 @RestController
 @RequestMapping("/api/v1")
 public class ApolloController {
@@ -32,12 +38,21 @@ public class ApolloController {
         this.cService = cService;
     }
 
+    @Operation(summary = "Get all scheduled consultations")
+    @ApiResponse(responseCode = "200", description = "Got all consultations successfully", content = @Content)
     @GetMapping("/consultations")
     public ResponseEntity<List<Consultation>> getAllConsultations() {
         List<Consultation> consultations = cService.findAllConsultations();
         return ResponseEntity.ok(consultations);
     }
 
+    @Operation(summary = "Add a new consultation")
+    @ApiResponses( value = {
+        @ApiResponse(responseCode = "200", description = "Added new consultation successfully",
+        content = @Content(mediaType = "application/json", schema = @Schema(implementation = Consultation.class))), 
+        @ApiResponse(responseCode = "500", description = "Something wrong happened while adding a new consultation",
+        content = @Content)
+    })
     @PostMapping("/consultations/add")
     public ResponseEntity<Consultation> addConsultation(@RequestBody Consultation consultation) {
         try {
@@ -53,6 +68,13 @@ public class ApolloController {
         }
     }
 
+    @Operation(summary = "Check-in consultation by id")
+    @ApiResponses( value = {
+        @ApiResponse(responseCode = "200", description = "Check-in successfully",
+        content = @Content), 
+        @ApiResponse(responseCode = "500", description = "Check-in failed",
+        content = @Content)
+    })
     @PostMapping("/checkin/{id}")
     public ResponseEntity<String> checkInConsultation(@PathVariable("id") Long id) {
         try {
@@ -63,6 +85,9 @@ public class ApolloController {
         }
     }
 
+    @Operation(summary = "Get consultation by id")
+    @ApiResponse(responseCode = "200", description = "Consultation found", 
+    content = @Content(mediaType = "application/json", schema = @Schema(implementation = Consultation.class)))
     @GetMapping("/consultations/{id}")
     public ResponseEntity<Consultation> getConsultationById(@PathVariable Long id) {
         Optional<Consultation> optionalConsultation = cService.getConsultationById(id);
@@ -70,6 +95,8 @@ public class ApolloController {
                                    .orElse(ResponseEntity.notFound().build());
     }
 
+    @Operation(summary = "Delete consultation by id")
+    @ApiResponse(responseCode = "200", description = "Consultation deleted successfully", content = @Content)
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> deleteConsultation(@PathVariable Long id) {
         cService.deleteConsultation(id);
