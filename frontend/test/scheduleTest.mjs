@@ -1,6 +1,5 @@
 import { Builder, By, Key, until } from 'selenium-webdriver';
 import { assert } from 'chai';
-import chrome from 'selenium-webdriver/chrome.js';
 
 describe('Schedule Test', function() {
     this.timeout(30000);
@@ -8,16 +7,7 @@ describe('Schedule Test', function() {
     let vars;
 
     before(async function() {
-        let options = new chrome.Options();
-        options.addArguments('headless'); 
-        options.addArguments('no-sandbox'); 
-        options.addArguments('disable-dev-shm-usage'); 
-
-        driver = await new Builder()
-            .forBrowser('chrome')
-            .setChromeOptions(options)
-            .build();
-
+        driver = await new Builder().forBrowser('chrome').build();
         vars = {};
     });
 
@@ -28,8 +18,7 @@ describe('Schedule Test', function() {
     it('should perform the specified actions', async function() {
         await driver.get('http://localhost:8100/home');
         await driver.manage().deleteAllCookies();
-        //await driver.manage().window().setRect({ width: 1485, height: 886 })
-        await driver.sleep(3000);
+        await driver.manage().window().setRect({ width: 1485, height: 886 })
         await driver.findElement(By.xpath("//ion-menu-button")).click()
         await driver.findElement(By.xpath("//ion-label")).click()
         await driver.findElement(By.id("ion-input-0")).click()
