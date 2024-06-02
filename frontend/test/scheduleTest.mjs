@@ -7,8 +7,16 @@ describe('Schedule Test', function() {
     let vars;
 
     before(async function() {
-        driver = await new Builder().forBrowser('chrome').build();
+        driver = await new Builder()
+            .usingServer(process.env.SELENIUM_REMOTE_URL)
+            .forBrowser('chrome')
+            .build();
+
         vars = {};
+    });
+
+    after(async function() {
+        await driver.quit();
     });
 
     after(async function() {

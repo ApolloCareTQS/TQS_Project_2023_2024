@@ -1,0 +1,56 @@
+name: seleniumPatient
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    services:
+      backend:
+        image: backend:latest
+        build:
+          context: ./backend
+          dockerfile: Dockerfile
+        ports:
+          - 8080:8080
+        options: > 
+          --health-cmd="curl --fail http://localhost:8080/actuator/health || exit 1"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+      selenium:
+        image: selenium/standalone-chrome:latest
+        ports:
+          - 4444:4444
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '16'
+
+    - name: Install frontend dependencies
+      working-directory: ./frontend
+      run: npm install
+
+    - name: Wait for backend to be healthy
+      run: |
+        until [ $(docker inspect --format='{{.State.Health.Status}}' $(docker ps -q --filter name=backend)) = "healthy" ]; do
+          echo "Waiting for backend to be healthy..."
+          sleep 2
+        done
+
+    - name: Run frontend tests
+      working-directory: ./frontend
+      run: npm test
+      env:
+        SELENIUM_REMOTE_URL: http://localhost:4444/wd/hub
