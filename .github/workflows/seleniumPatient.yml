@@ -30,9 +30,13 @@ jobs:
 
       - name: Install frontend dependencies
         run: npm install
+        with:
+          working-directory: frontend/
 
       - name: Build frontend
         run: npm run build
+        with:
+          working-directory: frontend/
 
       - name: Start backend
         run: |
@@ -40,6 +44,8 @@ jobs:
 
       - name: Run frontend tests
         run: npm test
+        with:
+          working-directory: frontend/
 
       - name: Stop backend
         run: |
