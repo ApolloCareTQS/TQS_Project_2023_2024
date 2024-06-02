@@ -1,18 +1,23 @@
 import { Builder, By, Key, until } from 'selenium-webdriver';
 import { assert } from 'chai';
+import chrome from 'selenium-webdriver/chrome.js';
 
 describe('Appointments Integration Test', function() {
     this.timeout(30000);
     let driver;
     let vars;
 
-    const screen = {
-        width: 1485,
-        height: 886 
-    };
-
     before(async function() {
-        driver = await new Builder().forBrowser('chrome').setChromeOptions(new chrome.Options().addArguments('--headless').windowSize(screen)).build();
+        let options = new chrome.Options();
+        options.addArguments('headless'); 
+        options.addArguments('no-sandbox'); 
+        options.addArguments('disable-dev-shm-usage'); 
+
+        driver = await new Builder()
+            .forBrowser('chrome')
+            .setChromeOptions(options)
+            .build();
+
         vars = {};
     });
 
