@@ -6,12 +6,13 @@ describe('Appointments Integration Test', function() {
     let driver;
     let vars;
 
-    before(async function() {
-        driver = await new Builder()
-            .usingServer(process.env.SELENIUM_REMOTE_URL)
-            .forBrowser('chrome')
-            .build();
+    const screen = {
+        width: 1485,
+        height: 886 
+    };
 
+    before(async function() {
+        driver = await new Builder().forBrowser('chrome').setChromeOptions(new chrome.Options().addArguments('--headless').windowSize(screen)).build();
         vars = {};
     });
 
@@ -22,7 +23,7 @@ describe('Appointments Integration Test', function() {
     it('should perform the specified actions', async function() {
         await driver.get('http://localhost:8100/home');
         await driver.manage().deleteAllCookies();
-        await driver.manage().window().setRect({ width: 1485, height: 886 })
+        //await driver.manage().window().setRect({ width: 1485, height: 886 })
         await driver.sleep(3000);
         await driver.findElement(By.xpath("//ion-menu-button")).click()
         await driver.findElement(By.xpath("//ion-label")).click()

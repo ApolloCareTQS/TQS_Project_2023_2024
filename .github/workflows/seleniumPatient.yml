@@ -31,9 +31,6 @@ jobs:
       - name: Install frontend dependencies
         run: cd frontend && npm install
 
-      - name: Build frontend
-        run: cd frontend && npm run build
-
       - name: Start backend
         run: |
           docker run -d --name my-backend -p 8080:8080 my-backend-image

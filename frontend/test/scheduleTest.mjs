@@ -6,17 +6,15 @@ describe('Schedule Test', function() {
     let driver;
     let vars;
 
+    const screen = {
+        width: 1485,
+        height: 886 
+    };
+
+
     before(async function() {
-        driver = await new Builder()
-            .usingServer(process.env.SELENIUM_REMOTE_URL)
-            .forBrowser('chrome')
-            .build();
-
+        driver = await new Builder().forBrowser('chrome').setChromeOptions(new chrome.Options().addArguments('--headless').windowSize(screen)).build();
         vars = {};
-    });
-
-    after(async function() {
-        await driver.quit();
     });
 
     after(async function() {
@@ -26,7 +24,7 @@ describe('Schedule Test', function() {
     it('should perform the specified actions', async function() {
         await driver.get('http://localhost:8100/home');
         await driver.manage().deleteAllCookies();
-        await driver.manage().window().setRect({ width: 1485, height: 886 })
+        //await driver.manage().window().setRect({ width: 1485, height: 886 })
         await driver.findElement(By.xpath("//ion-menu-button")).click()
         await driver.findElement(By.xpath("//ion-label")).click()
         await driver.findElement(By.id("ion-input-0")).click()
