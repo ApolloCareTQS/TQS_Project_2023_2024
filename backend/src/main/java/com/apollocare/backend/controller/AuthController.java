@@ -6,8 +6,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.PostMapping;
-//import org.springframework.web.bind.annotation.RequestBody;
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
+import org.springframework.web.bind.annotation.RequestBody;
+//import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -70,15 +70,7 @@ public class AuthController {
     })
     //TODO: find a way to prevent unauthorized users from signing up as doctor/staff (if implementing role-based access restrictions)
     @PostMapping("/register")
-    public ResponseEntity<User> signup(@RequestBody(content = @Content(
-        examples = { @ExampleObject(name="Register form sample", summary = "register form sample",
-        value = "{\"role\": PATIENT,"
-        + "\"username\": \"foobar\","
-        + "\"email\": \"example@gmail.com\","
-        + "\"password\": \"password\""
-        + "}"
-        )}
-    ))SignUpRequest requestBody, HttpServletResponse response){
+    public ResponseEntity<User> signup(@RequestBody SignUpRequest requestBody, HttpServletResponse response){
         String username=requestBody.username();
         String email=requestBody.email();
         String password=requestBody.password();
@@ -116,15 +108,7 @@ public class AuthController {
         content = @Content),
     })
     @PostMapping("/login")
-    public ResponseEntity<User> login(@RequestBody(content = @Content(
-        examples = { @ExampleObject(name="Login form sample", summary = "login form sample",
-        value = "{\"role\": PATIENT,"
-        + "\"username\": \"foobar\","
-        + "\"email\": \"example@gmail.com\","
-        + "\"password\": \"password\""
-        + "}"
-        )}
-    )) LogInRequest requestBody, HttpServletResponse response){
+    public ResponseEntity<User> login(@RequestBody LogInRequest requestBody, HttpServletResponse response){
         String email=requestBody.email();
         String password=requestBody.password();
         Role role;

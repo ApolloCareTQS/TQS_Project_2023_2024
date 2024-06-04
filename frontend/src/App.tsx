@@ -71,17 +71,17 @@ const App: React.FC = () => {
     const storedAuthState = localStorage.getItem('authState');
     if (storedAuthState) {
       console.log(storedAuthState);
-      //setAuthState(JSON.parse(storedAuthState));
+      setAuthState(JSON.parse(storedAuthState));
     }
   }, []);
 
   const login = (user: User) => {
-    //setAuthState(user);
+    setAuthState(user);
     localStorage.setItem('authState', JSON.stringify(user));
   }
 
   const logout = () => {
-    //setAuthState(null);
+    setAuthState(null);
     localStorage.removeItem('authState');
     window.location.reload();
   }

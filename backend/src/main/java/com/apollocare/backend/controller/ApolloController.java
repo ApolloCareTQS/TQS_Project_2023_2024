@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.apollocare.backend.models.Consultation;
+import com.apollocare.backend.models.Doctor;
 import com.apollocare.backend.service.ConsultationService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -44,6 +45,14 @@ public class ApolloController {
     public ResponseEntity<List<Consultation>> getAllConsultations() {
         List<Consultation> consultations = cService.findAllConsultations();
         return ResponseEntity.ok(consultations);
+    }
+
+    @Operation(summary = "Get all doctors registred in the system")
+    @ApiResponse(responseCode = "200", description = "Got all doctors successfully", content = @Content)
+    @GetMapping("/doctors")
+    public ResponseEntity<List<Doctor>> getDoctors() {
+        List<Doctor> doctors = cService.findAllDoctors();
+        return ResponseEntity.ok(doctors);
     }
 
     @Operation(summary = "Add a new consultation")

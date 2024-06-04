@@ -3,6 +3,7 @@ package com.apollocare.backend.Consultationtests;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.apollocare.backend.controller.ApolloController;
 import com.apollocare.backend.models.Consultation;
+import com.apollocare.backend.models.Doctor;
 import com.apollocare.backend.service.ConsultationService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -51,6 +52,21 @@ class TestApolloController {
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$[0].id").value(1));
+    }
+
+    @Test
+    void getAllDoctors_ReturnsListOfDoctors() throws Exception { 
+        Doctor doctor = new Doctor();
+        doctor.setId("1");
+        List<Doctor> doctors = new ArrayList<>();
+        doctors.add(doctor);
+
+        when(consultationService.findAllDoctors()).thenReturn(doctors);
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/doctors"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$[0].id").value("1"));
     }
 
     @Test
