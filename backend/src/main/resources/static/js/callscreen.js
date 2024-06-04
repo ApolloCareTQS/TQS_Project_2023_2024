@@ -1,5 +1,5 @@
 const stompClient = new StompJs.Client({
-    brokerURL: 'ws://localhost:8080/callscreen'
+    brokerURL: 'ws://localhost:9090/callscreen'
 });
 
 stompClient.onConnect = (frame) => {
